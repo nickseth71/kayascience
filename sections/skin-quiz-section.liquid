@@ -1,0 +1,72 @@
+<div class="skin-quiz__section-wrapper">
+  <div class="skin-quiz__content-wrapper">
+    For
+    <div class="skin-type__content-wrapp">
+      <select class="js_col_label skin-type-data">
+        {% for block in section.blocks %}
+          {% if block.type == 'skin_content' %}
+            {% if block.settings.col_label != blank %}
+              <optio>
+                {{ block.settings.col_label }}
+              </optio>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+    I'm looking for
+      <div class="product-type__content-wrapp">
+      <select class="js_col_list product-type-data">
+        {% for block in section.blocks %}
+          {% if block.type == 'skin_content' %}
+            {% assign collection_listing = block.settings.col_list %}
+            {% if collection_listing != blank %}
+              {{ collection_listing.handle }}
+              <optio>
+                {{ block.settings.col_label }}
+              </optio>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Skin Quiz Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "butn_label",
+      "label": "Button Label",
+      "default": "Discover your match"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "skin_content",
+      "name":"Content",
+      "settings": [
+           {
+            "type": "text",
+            "id": "col_label",
+            "label": "Label",
+            "default":"My Face"
+          },
+          {
+            "type": "collection_list",
+            "id": "col_list",
+            "label": "Collection List [For Product Type]"
+          }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Skin Quiz Section"
+    }
+  ]
+}
+{% endschema %}
