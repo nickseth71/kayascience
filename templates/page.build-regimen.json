@@ -11,50 +11,37 @@
   "sections": {
     "skin_quiz_section_HBDtmR": {
       "type": "skin-quiz-section",
-      "blocks": {
-        "skin_content_GBkJ9K": {
-          "type": "skin_content",
-          "settings": {
-            "col_label": "My Face",
-            "col_list": [
-              "acne-build-regimen",
-              "aloe-vera",
-              "acne-and-pimples-1",
-              "anti-ageing-build-regimen"
-            ]
-          }
-        },
-        "skin_content_JDm6na": {
-          "type": "skin_content",
-          "settings": {
-            "col_label": "My Body",
-            "col_list": [
-              "body-lotion",
-              "calluses",
-              "clogged-pores-build-regimen"
-            ]
-          }
-        },
-        "skin_content_tQEwHf": {
-          "type": "skin_content",
-          "settings": {
-            "col_label": "My Hair",
-            "col_list": [
-              "hair-oil",
-              "hair-serum",
-              "hairfall",
-              "hairfall-regrowth"
-            ]
-          }
-        }
-      },
-      "block_order": [
-        "skin_content_GBkJ9K",
-        "skin_content_JDm6na",
-        "skin_content_tQEwHf"
-      ],
       "name": "Skin Quiz Section",
       "settings": {
+        "col_trigger1": "face",
+        "col_label1": "For Face",
+        "col_list1": [
+          "acne-build-regimen",
+          "aloe-vera",
+          "anti-aging-1",
+          "dark-spots-build-regimen"
+        ],
+        "col_trigger2": "body",
+        "col_label2": "For Body",
+        "col_list2": [
+          "body-lotion",
+          "build-regimen",
+          "calluses",
+          "clogged-pores-build-regimen"
+        ],
+        "col_trigger3": "hair",
+        "col_label3": "For Hair",
+        "col_list3": [
+          "damaged-hair",
+          "hair-oil",
+          "hair-serum"
+        ],
+        "col_trigger4": "",
+        "col_label4": "",
+        "col_list4": [],
+        "col_trigger5": "",
+        "col_label5": "",
+        "col_list5": [],
         "butn_label": "Discover your match"
       }
     },
