@@ -48,6 +48,13 @@ any concern</span>
 
 </select>
 </div>
+{% if section.settings.search_btn_label != blank %}
+<div class="search_btn_label_wrapp">
+<div class="button js-search-products">
+    {{ section.settings.search_btn_label }}
+</div>
+</div>
+{% endif %}
   </div>
 </div> 
 
@@ -233,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       "type": "text",
-      "id": "butn_label",
+      "id": "search_btn_label",
       "label": "Button Label",
       "default": "Discover your match"
     }
