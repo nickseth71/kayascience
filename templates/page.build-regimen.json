@@ -9,6 +9,60 @@
  */
 {
   "sections": {
+      "skin_quiz_section_HBDtmR": {
+      "type": "skin-quiz-section",
+      "blocks": {
+        "skin_content_GBkJ9K": {
+          "type": "skin_content",
+          "settings": {
+            "col_label": "My Face",
+            "col_list": [
+              "acne-build-regimen",
+              "acne-and-pimples-1",
+              "anti-ageing-build-regimen"
+            ]
+          }
+        },
+        "skin_content_JDm6na": {
+          "type": "skin_content",
+          "settings": {
+            "col_label": "My Body",
+            "col_list": [
+              "body-lotion",
+              "build-regimen",
+              "clogged-pores-build-regimen",
+              "cleansers-moisturizers-and-face-combos-1",
+              "dryness"
+            ]
+          }
+        },
+        "skin_content_tQEwHf": {
+          "type": "skin_content",
+          "settings": {
+            "col_label": "My Hair",
+            "col_list": [
+              "hair-oil",
+              "hair-products-and-hair-combos",
+              "hair-serum",
+              "hairfall",
+              "hairfall-regrowth",
+              "hair-fall-and-damage-build-regimen",
+              "shampoo-1",
+              "serum"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "skin_content_GBkJ9K",
+        "skin_content_JDm6na",
+        "skin_content_tQEwHf"
+      ],
+      "name": "Skin Quiz Section",
+      "settings": {
+        "butn_label": "Discover your match"
+      }
+    },
     "main": {
       "type": "main-page",
       "disabled": true,
@@ -272,6 +326,7 @@
     }
   },
   "order": [
+    "skin_quiz_section_HBDtmR",
     "main",
     "image_banner_jmFQCq",
     "rich_text_GNiU63",
