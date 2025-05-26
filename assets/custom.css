@@ -31,7 +31,7 @@
 .highlights-section-wrap .icon-with-text-wrap {
   background: linear-gradient(90deg, #e1edf0 0%, #eadbe7 50%, #e1edf0 100%);
   border-radius: 12px;
-  padding: 24px 0;
+  padding: 18px 0;
   overflow: hidden;
 }
 
@@ -247,7 +247,7 @@
   display: flex;
   gap: 15px;
   justify-content: space-between;
-  padding-bottom: 1rem;
+  padding-bottom: 0;
 }
 .card__content
   .quick-add
@@ -1661,7 +1661,7 @@ facet-remove a .active-facets__button-inner {
     justify-content: center;
   }
   .title-wrapper {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
   .article-card__info time {
     font-size: 14px;
@@ -1740,7 +1740,7 @@ facet-remove a .active-facets__button-inner {
   }
 
   .price--on-sale .price-item--regular {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 
   .price .price-item {
