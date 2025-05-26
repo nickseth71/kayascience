@@ -1,14 +1,14 @@
 <div class="skin-quiz__section-wrapper">
-  <div class="skin-quiz__content-wrapper">
+  <div class="skin-quiz__content-wrapper page-width">
     For
     <div class="skin-type__content-wrapp">
       <select class="js_col_label skin-type-data">
         {% for block in section.blocks %}
           {% if block.type == 'skin_content' %}
             {% if block.settings.col_label != blank %}
-              <optio>
+              <option>
                 {{ block.settings.col_label }}
-              </optio>
+              </option>
             {% endif %}
           {% endif %}
         {% endfor %}
@@ -22,9 +22,9 @@
             {% assign collection_listing = block.settings.col_list %}
             {% if collection_listing != blank %}
               {{ collection_listing.handle }}
-              <optio>
+              <option>
                 {{ block.settings.col_label }}
-              </optio>
+              </option>
             {% endif %}
           {% endif %}
         {% endfor %}
