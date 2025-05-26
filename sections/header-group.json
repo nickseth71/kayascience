@@ -1,0 +1,357 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement_bar_DMrgtW": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_JnbnMr": {
+          "type": "announcement",
+          "settings": {
+            "text": "Enjoy a free gift on orders above Rs 1199",
+            "link": "shopify://collections/shop-all"
+          }
+        },
+        "announcement_4WhWtY": {
+          "type": "announcement",
+          "settings": {
+            "text": "Get free purifying cleanser on orders above Rs 1699",
+            "link": "shopify://collections/shop-all"
+          }
+        },
+        "announcement_gJWrgq": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free Dermat Consultation on orders above Rs 1999",
+            "link": "https://kayascience.com/collections/shop-all"
+          }
+        },
+        "announcement_bQWHX3": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free Dermat Consultation + Signature Face Therapy on orders above Rs 3999",
+            "link": "https://kayascience.com/collections/shop-all"
+          }
+        },
+        "announcement_brfQRb": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping available above ₹699",
+            "link": ""
+          }
+        },
+        "announcement_aVpUfT": {
+          "type": "announcement",
+          "settings": {
+            "text": "Gift sets starting @299 🎁",
+            "link": "shopify://pages/gifting-store"
+          }
+        },
+        "announcement_gcTQgA": {
+          "type": "announcement",
+          "settings": {
+            "text": "Combos upto 50% off 🎁",
+            "link": "shopify://collections/build-regimen"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_JnbnMr",
+        "announcement_4WhWtY",
+        "announcement_gJWrgq",
+        "announcement_bQWHX3",
+        "announcement_brfQRb",
+        "announcement_aVpUfT",
+        "announcement_gcTQgA"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "show_line_separator": true,
+        "show_social": false,
+        "auto_rotate": true,
+        "change_slides_speed": 3,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_2_fbzbNW": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Best Sellers",
+            "megamenu_link_label": "VIEW ALL",
+            "megamenu_link": "shopify://collections/best-sellers",
+            "about_heading": "",
+            "about_menu": "",
+            "text_heading": "",
+            "about_menu1": "",
+            "menu2_text_1": "Anytime Moisturizing Cream | Gentle & Hydrating Skin Moisturizer 50 ml",
+            "menu2_image_1": "shopify://shop_images/water.webp",
+            "img_link1": "https://kayascience.com/products/anytime-moisturizing-cream-50ml",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Brightening Day Cream | Hydrating Day Moisturizer with SPF 50 ml",
+            "menu2_image_2": "shopify://shop_images/texture_87e0b4e0-1fcb-4f82-8c5a-2a565851999b.webp",
+            "img_link2": "https://kayascience.com/products/brightening-day-cream",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "10% Niacinamide + 1% Azeloglycina Face Serum | Acne Care Face Serum",
+            "menu2_image_3": "shopify://shop_images/science_9762ea5d-e5d9-4567-a9d9-e14e70988dd9.webp",
+            "img_link3": "https://kayascience.com/products/kaya-10-niacinamide-1-azeloglycina-face-serum",
+            "about_link_3": "",
+            "about_link_url_3": "",
+            "menu2_text_4": "Purifying Nourisher | Hydrating & Acne Control Face Cream 50ml",
+            "menu2_image_4": "shopify://shop_images/Copy_of_unstudio-out_14.webp",
+            "img_link4": "https://kayascience.com/products/purifying-nourisher",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "",
+            "img_link5": "",
+            "about_link_5": "VIEW MORE",
+            "about_link_url_5": "",
+            "menu2_text_6": "",
+            "img_link6": "",
+            "about_link_6": "VIEW MORE",
+            "about_link_url_6": ""
+          }
+        },
+        "mega_menu_2_Rgrq6m": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Skin Care",
+            "megamenu_link_label": "SHOP ALL",
+            "megamenu_link": "https://kayascience.com/collections/face-care-products",
+            "about_heading": "By Category",
+            "about_menu": "skincare",
+            "text_heading": "By Concern",
+            "about_menu1": "by-concern-skin",
+            "menu2_text_1": "Purifying Cleanser | Clarifying & Acne Control Face Cleanser 100ml",
+            "menu2_image_1": "shopify://shop_images/kaya_water.webp",
+            "img_link1": "https://kayascience.com/products/purifying-cleanser",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Replenishing Night Cream | Anti-Ageing Night Moisturizer 50g",
+            "menu2_image_2": "shopify://shop_images/Copy_of_unstudio-out_9_5.webp",
+            "img_link2": "https://kayascience.com/products/replenishing-night-cream",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "",
+            "img_link3": "",
+            "about_link_3": "",
+            "about_link_url_3": "",
+            "menu2_text_4": "",
+            "img_link4": "",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "",
+            "img_link5": "",
+            "about_link_5": "VIEW MORE",
+            "about_link_url_5": "",
+            "menu2_text_6": "",
+            "img_link6": "",
+            "about_link_6": "VIEW MORE",
+            "about_link_url_6": ""
+          }
+        },
+        "mega_menu_2_iTQGbr": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Hair Care",
+            "megamenu_link_label": "SHOP ALL",
+            "megamenu_link": "https://kayascience.com/collections/hair-care-products",
+            "about_heading": "By Category",
+            "about_menu": "by-category-hair",
+            "text_heading": "By Concern",
+            "about_menu1": "by-concern-hair",
+            "menu2_text_1": "Scalp Revitalizing Shampoo | Hair Fall Control Shampoo 225 ml",
+            "menu2_image_1": "shopify://shop_images/texture_1.webp",
+            "img_link1": "https://kayascience.com/products/scalp-revitalizing-shampoo",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Nourishing Shampoo | Mild and Hydrating Hair Shampoo 200 ml",
+            "menu2_image_2": "shopify://shop_images/texture_17.webp",
+            "img_link2": "https://kayascience.com/products/nourishing-shampoo-200ml",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "",
+            "img_link3": "",
+            "about_link_3": "",
+            "about_link_url_3": "",
+            "menu2_text_4": "",
+            "img_link4": "",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "",
+            "img_link5": "",
+            "about_link_5": "VIEW MORE",
+            "about_link_url_5": "",
+            "menu2_text_6": "",
+            "img_link6": "",
+            "about_link_6": "VIEW MORE",
+            "about_link_url_6": ""
+          }
+        },
+        "mega_menu_2_aRY9hq": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Bath & Body",
+            "megamenu_link_label": "SHOP ALL",
+            "megamenu_link": "https://kayascience.com/collections/body-care-products",
+            "about_heading": "By Category",
+            "about_menu": "by-category-body",
+            "text_heading": "By Concern",
+            "about_menu1": "by-concern-body",
+            "menu2_text_1": "Deep Nourish & Elbow Foot Cream | Hydrating Elbow & Foot Cream 50 ml",
+            "menu2_image_1": "shopify://shop_images/unstudio-out_17_1_20.webp",
+            "img_link1": "https://kayascience.com/products/deep-nourish-elbow-foot-cream",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Intense Hydration Body Lotion | Moisturizing Body Cream 200 ml",
+            "menu2_image_2": "shopify://shop_images/unstudio-out_23_24.webp",
+            "img_link2": "https://kayascience.com/products/intense-hydration-body-lotion-1",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "",
+            "img_link3": "",
+            "about_link_3": "VIEW MORE",
+            "about_link_url_3": "",
+            "menu2_text_4": "",
+            "img_link4": "",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "",
+            "img_link5": "",
+            "about_link_5": "VIEW MORE",
+            "about_link_url_5": "",
+            "menu2_text_6": "",
+            "img_link6": "",
+            "about_link_6": "VIEW MORE",
+            "about_link_url_6": ""
+          }
+        },
+        "mega_menu_2_63BUFG": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Shop By Ingredient",
+            "megamenu_link_label": "",
+            "megamenu_link": "",
+            "about_heading": "",
+            "about_menu": "",
+            "text_heading": "Menu Heading",
+            "about_menu1": "",
+            "menu2_text_1": "Salicylic Acid",
+            "menu2_image_1": "shopify://shop_images/image_40.png",
+            "img_link1": "shopify://collections/salicylic-acid-products",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Niacinamide",
+            "menu2_image_2": "shopify://shop_images/image_20.png",
+            "img_link2": "shopify://collections/niacinamide-products",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "Vitamin B5",
+            "menu2_image_3": "shopify://shop_images/image_21.png",
+            "img_link3": "shopify://collections/vitamin-b5",
+            "about_link_3": "",
+            "about_link_url_3": "",
+            "menu2_text_4": "Glycerine",
+            "menu2_image_4": "shopify://shop_images/img-edited.png",
+            "img_link4": "shopify://collections/glycerine",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "Vitamin C",
+            "menu2_image_5": "shopify://shop_images/image_19_2d22b9ce-a190-4bc1-a6c1-454eb6d57ea8.png",
+            "img_link5": "shopify://collections/vitamin-c-products",
+            "about_link_5": "",
+            "about_link_url_5": "",
+            "menu2_text_6": "Azeloyl Glycine",
+            "menu2_image_6": "shopify://shop_images/image_18_95400469-d72c-4a01-99f9-f35585ee441a.png",
+            "img_link6": "shopify://collections/azeloyl-glycine-products",
+            "about_link_6": "",
+            "about_link_url_6": ""
+          }
+        },
+        "mega_menu_2_FDrNHC": {
+          "type": "mega_menu_2",
+          "settings": {
+            "heading": "Build Regimen",
+            "megamenu_link_label": "SHOP ALL",
+            "megamenu_link": "shopify://pages/build-regimen",
+            "about_heading": "By Category",
+            "about_menu": "by-categorybuild-regimen",
+            "text_heading": "By Concern",
+            "about_menu1": "by-concernbuild-regimen",
+            "menu2_text_1": "Luminous Skin Brightening Combo | Cleanser, Serum & Creams for Glowing Skin",
+            "menu2_image_1": "shopify://shop_images/LuminousLiftCombo.webp",
+            "img_link1": "https://kayascience.com/products/luminous-lift-combo",
+            "about_link_1": "",
+            "about_link_url_1": "",
+            "menu2_text_2": "Radiance Revival Combo | Reduces Pigmentation & Enhances Glow",
+            "menu2_image_2": "shopify://shop_images/RadianceRevival.webp",
+            "img_link2": "https://kayascience.com/products/radiance-revival-combo",
+            "about_link_2": "",
+            "about_link_url_2": "",
+            "menu2_text_3": "",
+            "img_link3": "",
+            "about_link_3": "",
+            "about_link_url_3": "",
+            "menu2_text_4": "",
+            "img_link4": "",
+            "about_link_4": "",
+            "about_link_url_4": "",
+            "menu2_text_5": "",
+            "img_link5": "",
+            "about_link_5": "",
+            "about_link_url_5": "",
+            "menu2_text_6": "",
+            "img_link6": "",
+            "about_link_6": "VIEW MORE",
+            "about_link_url_6": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_2_fbzbNW",
+        "mega_menu_2_Rgrq6m",
+        "mega_menu_2_iTQGbr",
+        "mega_menu_2_aRY9hq",
+        "mega_menu_2_63BUFG",
+        "mega_menu_2_FDrNHC"
+      ],
+      "settings": {
+        "logo_position": "top-center",
+        "menu": "new-mega-menu",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": false,
+        "icon_1_link": "",
+        "icon_2_link": "",
+        "icon_3_link": "",
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 12,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_DMrgtW",
+    "header"
+  ]
+}

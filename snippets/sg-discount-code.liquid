@@ -1,0 +1,318 @@
+<script>
+var  TIMEOUT_VAR;
+function initializeDiscountWidget() {
+  const APP_DOMAIN = "https://kaya-science-discount-e0fa68da8cdb.herokuapp.com";
+  const API_URL = APP_DOMAIN + "/api/get-code";
+  const COOKIE_NAME = "discount_timer";
+  const DISCOUNT_COOKIE = "discount_code_cus";
+  const DISCOUNT_EXPIRE = "discount_code_expire";
+  const ACTIVE_COOKIE = "discount_active"; 
+  const TIMER_DURATION = 15 * 60;
+  const ACTIVE_DURATION = 12 * 60 * 60; 
+  const EXPIRE_DURATION = 24 * 60 * 60;
+
+
+  let discountCode = getCookie(DISCOUNT_COOKIE);
+  let remainingTime = parseInt(getCookie(COOKIE_NAME), 10) || TIMER_DURATION;
+
+  async function fetchDiscountCode() {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      if (data.success && data.data.code) {
+        discountCode = data.data.code;
+        setCookie(DISCOUNT_COOKIE, discountCode, TIMER_DURATION);
+        setCookie(COOKIE_NAME, TIMER_DURATION, TIMER_DURATION);
+        // setCookie(ACTIVE_COOKIE, "true", ACTIVE_DURATION);
+        renderWidget(discountCode, TIMER_DURATION);
+      }
+    } catch (error) {
+      console.error("Failed to fetch discount code:", error);
+    }
+  }
+
+  function renderWidget(code, timeLeft) {
+    let widgetContainer = document.querySelector(".discount-widget-container");
+    if (!widgetContainer) return;
+
+    let existingWidget = document.querySelectorAll(".discount-widget");
+    if (existingWidget?.length) {
+      existingWidget.forEach((el) => {
+        el.remove();
+      });
+    }
+
+    let widget = document.createElement("div");
+    widget.id = "discount-widget";
+    widget.className = "discount-widget";
+    widget.innerHTML = `
+      <div class="dw_wrap">
+        <div class="dw_info">
+          <div class="dw_title">Limited Time Offer!</div>
+          <div class="dw_desc">Use code to avail 5% off on entire cart value</div>
+        </div>
+        <div class="dw_inwrp">
+          <div class="dwcode_wrap">
+            <div class="dw_code">${code}</div>
+            <button id="copy-code-btn" class="dw_copy button">Copy</button>
+          </div>
+          <div id="timer-text" class="dw_timertext">
+            <div class="dw_cdtwrap">
+              <strong>Offer Expires in: <span id="countdown">${formatTime(timeLeft)}</span> ⏱️</strong>
+            </div>
+            <div class="dw_desc_2"><strong>Flat 5% off</strong> on orders above {{ 139900 | money }}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (getCookie(ACTIVE_COOKIE) === "true") {
+      // widgetContainer.appendChild(widget);
+      widgetContainer.innerHTML = widget.outerHTML;
+      startCountdown(timeLeft);
+    } else {
+      setTimeout(() => {
+        // widgetContainer.appendChild(widget);
+        widgetContainer.innerHTML = widget.outerHTML;
+        if (!document.body.classList.contains("discount_show")) {
+          document.body.classList.add("discount_show");
+        }
+        setCookie(ACTIVE_COOKIE, "true", ACTIVE_DURATION);
+
+        TIMEOUT_VAR = setTimeout(() => {
+          document.body.classList.remove("discount_show");
+        }, 2000);
+
+        startCountdown(timeLeft);
+      }, 10000);
+    }
+
+    document.getElementById("copy-code-btn").addEventListener("click", function () {
+      navigator.clipboard.writeText(code);
+      this.innerHTML = "Copied";
+      setTimeout(() => {
+        this.innerHTML = "Copy";
+      }, 1000);
+    });
+
+  }
+
+  function startCountdown(seconds) {
+    const countdownEl = document.getElementById("countdown");
+    if (!countdownEl) return;
+
+    const interval = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = formatTime(seconds);
+      setCookie(COOKIE_NAME, seconds, seconds);
+
+      if (seconds <= 0) {
+        clearInterval(interval);
+        deleteCookie(COOKIE_NAME);
+        deleteCookie(DISCOUNT_COOKIE);
+        deleteCookie(ACTIVE_COOKIE);
+        document.getElementById("discount-widget")?.remove();
+        setCookie(DISCOUNT_EXPIRE, "true", EXPIRE_DURATION);
+        
+      }
+    }, 1000);
+  }
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  }
+
+  function setCookie(name, value, seconds) {
+    let expires = new Date();
+    expires.setTime(expires.getTime() + seconds * 1000);
+    document.cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/`;
+  }
+
+  function getCookie(name) {
+    let match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+    return match ? match[2] : null;
+  }
+
+  function deleteCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
+  if (discountCode) {
+    renderWidget(discountCode, remainingTime);
+    startCountdown(remainingTime);
+  } else {
+    fetchDiscountCode();
+  }
+}
+
+    document.addEventListener("DOMContentLoaded", function () {
+  const cartDrawer = document.querySelector("cart-drawer");
+
+  if (cartDrawer) {
+    const observer = new MutationObserver(() => {
+      if (cartDrawer.classList.contains("active")) {
+         clearTimeout(TIMEOUT_VAR)
+        initializeDiscountWidget();
+      }
+    });
+
+    observer.observe(cartDrawer, { attributes: true, attributeFilter: ["class"] });
+  }
+
+      
+    document.addEventListener("click", function (event) {
+  const button = event.target.closest("#copy-code-btn");
+  if (!button) return; 
+
+  console.log("Copy button clicked:", button);
+
+  const discountCodeElement = document.querySelector(".dw_code");
+  if (!discountCodeElement) {
+    console.warn("Discount code element not found!");
+    return;
+  }
+
+  const discountCode = discountCodeElement.innerText.trim();
+  console.log("Copying discount code:", discountCode); 
+
+  navigator.clipboard.writeText(discountCode)
+    .then(() => {
+      button.innerHTML = "Copied";
+      setTimeout(() => {
+        button.innerHTML = "Copy";
+      }, 1000);
+    })
+    .catch(err => console.error("Clipboard copy failed:", err));
+});
+
+});
+</script>
+
+<style>
+      .dw_wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+
+      .discount-widget-container {
+        width: 100%;
+      }
+
+      div#discount-widget {
+        color: #000;
+        background: #dfeeed;
+      }
+
+      .dw_title {
+        font-size: 18px;
+        line-height:1.2;
+      }
+      .dw_info {
+        text-align: center;
+      }
+
+      .dw_desc {
+        font-size: 13px;
+      }
+
+      .dw_inwrp {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .dwcode_wrap {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .dw_copy.button {
+        padding: 4px !important;
+        min-width: 60px;
+        min-height: 24px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
+
+    .dw_copy.button:before,.dw_copy.button:after {
+        display: none;
+    }
+
+    .dw_code {
+        text-transform: uppercase;
+        padding: 4px;
+        border-radius: 4px;
+        border: 2px dashed currentColor;
+      line-height: 1;
+      font-size: 14px;
+    }
+
+
+      .dw_inwrp {
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .dw_info {
+          display: none;
+      }
+
+      .dw_desc_2 {
+        font-size: 12px;letter-spacing:0;
+    }
+
+    body:has(cart-drawer.active) {
+      overflow: hidden;
+  }
+
+    @media (max-width: 768px) {
+      .dwcode_wrap {
+      flex-direction: column;
+  }
+    }
+
+      @media (max-width: 480px) {
+      .dw_code {
+      font-size: 11px;
+  }
+    }
+
+
+    /* body.discount_show .cart-drawer .drawer__inner:before{
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background:rgba(0, 0, 0, .4) url(https://cdn.shopify.com/s/files/1/0891/9413/5854/files/coupon-unlocked.svg?v=1740044649) no-repeat center;background-size:auto;
+  z-index: 9;
+  }
+  body.discount_show .cart-drawer .drawer__inner {
+      overflow: hidden;border-left:none;
+  }
+  body.discount_show .cart-drawer .drawer__inner:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: url(https://cdn.shopify.com/s/files/1/0891/9413/5854/files/party_popper_gif.gif?v=1725968419) no-repeat center;
+      z-index: 99;
+      background-size: contain;
+  } */
+</style>

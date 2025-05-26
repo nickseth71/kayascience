@@ -1,0 +1,31 @@
+<div class="product-slider-container custom--product-media-slider">
+  <!-- Main Slider -->
+  <div class="swiper-container main-slider">
+    <div class="swiper-wrapper">
+      {% for media in product.media %}
+        <div class="swiper-slide">
+          {{ media | image_url: width: '1024' | image_tag: loading: 'lazy', class: 'pro-image' }}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev main-slider-prev"></div>
+    <div class="swiper-button-next main-slider-next"></div>
+  </div>
+
+  <!-- Thumbnail Slider -->
+  <div class="thumbnail-slider">
+    <div class="swiper-container custom-thumb-slider">
+      <div class="swiper-wrapper">
+        {% for media in product.media %}
+          <div class="swiper-slide">
+            {{ media | image_url: width: '1024' | image_tag: loading: 'lazy', class: 'media-img' }}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-prev thumbnail-slider-prev"></div>
+      <div class="swiper-button-next thumbnail-slider-next"></div>
+    </div>
+  </div>
+</div>
+
