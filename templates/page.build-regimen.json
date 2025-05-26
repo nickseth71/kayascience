@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-      "skin_quiz_section_HBDtmR": {
+    "skin_quiz_section_HBDtmR": {
       "type": "skin-quiz-section",
       "blocks": {
         "skin_content_GBkJ9K": {
@@ -18,6 +18,7 @@
             "col_label": "My Face",
             "col_list": [
               "acne-build-regimen",
+              "aloe-vera",
               "acne-and-pimples-1",
               "anti-ageing-build-regimen"
             ]
@@ -29,10 +30,8 @@
             "col_label": "My Body",
             "col_list": [
               "body-lotion",
-              "build-regimen",
-              "clogged-pores-build-regimen",
-              "cleansers-moisturizers-and-face-combos-1",
-              "dryness"
+              "calluses",
+              "clogged-pores-build-regimen"
             ]
           }
         },
@@ -42,13 +41,9 @@
             "col_label": "My Hair",
             "col_list": [
               "hair-oil",
-              "hair-products-and-hair-combos",
               "hair-serum",
               "hairfall",
-              "hairfall-regrowth",
-              "hair-fall-and-damage-build-regimen",
-              "shampoo-1",
-              "serum"
+              "hairfall-regrowth"
             ]
           }
         }

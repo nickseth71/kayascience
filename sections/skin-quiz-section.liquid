@@ -15,23 +15,23 @@
       </select>
     </div>
     I'm looking for
-      <div class="product-type__content-wrapp">
-      <select class="js_col_list product-type-data">
+    <div class="product-type__content-wrapp">
+        <select class="js_col_list product-type-data">
+        <option disabled selected>Select product type</option>
         {% for block in section.blocks %}
-          {% if block.type == 'skin_content' %}
-            {% assign collection_listing = block.settings.col_list %}
-            {% if collection_listing != blank %}
-              {{ collection_listing.handle }}
-              <option>
-                {{ block.settings.col_label }}
-              </option>
+            {% if block.type == 'skin_content' %}
+            {% assign collection = collections[block.settings.col_list] %}
+          
+                <option value="{{ collection.handle }}">
+                {{ collection.title }}
+                </option>
+         
             {% endif %}
-          {% endif %}
         {% endfor %}
-      </select>
+        </select>
     </div>
   </div>
-</div>
+</div> 
 
 {% schema %}
 {
@@ -46,22 +46,22 @@
   ],
   "blocks": [
     {
-      "type": "skin_content",
-      "name":"Content",
-      "settings": [
-           {
-            "type": "text",
-            "id": "col_label",
-            "label": "Label",
-            "default":"My Face"
-          },
-          {
-            "type": "collection_list",
-            "id": "col_list",
-            "label": "Collection List [For Product Type]"
-          }
-      ]
+  "type": "skin_content",
+  "name": "Skin Concern Option",
+  "settings": [
+    {
+      "type": "text",
+      "id": "col_label",
+      "label": "Label to Display"
+    },
+    {
+      "type": "collection_list",
+      "id": "col_list",
+      "label": "Collection List [For Product Type]"
     }
+  ]
+}
+
   ],
   "presets": [
     {

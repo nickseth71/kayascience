@@ -30,7 +30,7 @@
           <div class="shop_category--left-wrap">
             <div class="title-wrapper">
             {% if block.settings.cat_heading != blank %}
-              <h2 class="title">{{ block.settings.cat_heading }}</h2>
+              <h1 class="title inline-richtext h1">{{ block.settings.cat_heading }}</h1>
             {% endif %}
             {% if block.settings.cat_subheading != blank %}
               <div class="cat_subheading sub_heading">{{ block.settings.cat_subheading }}</div>
@@ -66,7 +66,7 @@
             {% if block.settings.tar_heading != blank or block.settings.tar_text != blank %}
               <div class="shop_category--heading title-wrapper">
                 {% if block.settings.tar_heading != blank %}
-                  <h2 class="title">{{ block.settings.tar_heading }}</h2>
+                   <h1 class="title inline-richtext h1">{{ block.settings.tar_heading }}</h1>
                 {% endif %}
                 {% if block.settings.tar_text != blank %}
                   <div class="rte sub_heading">{{ block.settings.tar_text }}</div>
