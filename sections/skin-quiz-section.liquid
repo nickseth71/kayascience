@@ -16,20 +16,22 @@
     </div>
     I'm looking for
     <div class="product-type__content-wrapp">
-      <select class="js_col_list product-type-data">
+        <select class="js_col_list product-type-data">
         <option disabled selected>Select product type</option>
         {% for block in section.blocks %}
             {% if block.type == 'skin_content' %}
-            {% assign collection = block.settings.col_list %}
-              <option value="{{ collection.handle }}">
+            {% assign collection = collections[block.settings.col_list] %}
+          
+                <option value="{{ collection.handle }}">
                 {{ collection.title }}
-            </option>
+                </option>
+         
             {% endif %}
         {% endfor %}
         </select>
     </div>
   </div>
-</div>
+</div> 
 
 {% schema %}
 {
@@ -53,7 +55,7 @@
       "label": "Label to Display"
     },
     {
-      "type": "collection",
+      "type": "collection_list",
       "id": "col_list",
       "label": "Collection List [For Product Type]"
     }
