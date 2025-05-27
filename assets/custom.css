@@ -5516,17 +5516,31 @@ body.blog .blog-content-wrap .card__information {
 }
 
 .selected-data-content ul.type-data-content {
-    position: absolute;
+       position: absolute;
     top: 0;
-    padding: 6px;
+    padding: 3px 17px 6px 6px;
     list-style: none;
     white-space: nowrap;
     margin: 0;
-    background: #fff;right:0;border:solid 1px rgba(0, 0, 0, 0.03)
+    background: #fff url(/cdn/shop/files/quiz-arrow-up.svg?v=1748345055) no-repeat calc(100% - 3px) 10px;
+    right: 5px;
+    border:solid 1px rgba(0, 0, 0, 0.03);
+    background-size: 12px;z-index: 9;
 }
-.selected-data-content ul.type-data-content  li {font-size: 13px; cursor: pointer;}
+.selected-data-content ul.type-data-content  li {font-size: 13px; cursor: pointer;padding-right: 4px ;}
 .selected-data-content .dropdown-heading {
     font-size: 22px;
     font-weight: bold;
-    opacity: .5;cursor: pointer;
+    color: #949494;
+   cursor: pointer;position: relative;
+}
+.selected-data-content .dropdown-heading::after{
+  content: "";
+  display: inline-block;width:15px; height: 10px;
+  background: url('https://cdn.shopify.com/s/files/1/0891/9413/5854/files/quiz-arrow-down.svg?v=1748345055') no-repeat center;
+  background-size: contain;margin-left: 5px;
+
+} 
+body.search-quiz-products .template-search__header {
+    display: none;
 }
