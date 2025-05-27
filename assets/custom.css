@@ -5486,3 +5486,28 @@ body.blog .blog-content-wrap .card__information {
     max-width: 100%!important;
 }
 
+.skin-quiz__content-wrapper {
+    display: flex;
+    padding: 60px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.search_btn_label_wrapp {
+    flex-basis: 100%;
+    text-align: center;margin-top:30px;
+}
+.skin-quiz__content-wrapper span {
+    font-size: 22px;
+    font-weight: bold;
+    color: #090505;
+}
+
+.skin-quiz__content-wrapper select {
+    font-size: 22px;
+    font-weight: bold;
+    opacity: .5;
+    border: none;
+    margin: 0 10px;
+}
