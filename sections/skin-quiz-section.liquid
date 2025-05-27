@@ -294,17 +294,46 @@ document.addEventListener("DOMContentLoaded", () => {
     concernSelect.innerHTML = '<li disabled selected>Any Concern</li>';
   }
 
-  dropdownHeadings.forEach(heading => {
-    heading.addEventListener('click', () => {
-      const dropdown = heading.nextElementSibling;
-     
-      if (dropdown) {
-        dropdown.classList.toggle('active');
-        overlayEle.classList.toggle('active');
-        dropdown.style.display = dropdown.classList.contains('active') ? "block" : "none";
+dropdownHeadings.forEach(heading => {
+  heading.addEventListener('click', () => {
+    const dropdown = heading.nextElementSibling;
+
+    if (dropdown) {
+      const isActive = dropdown.classList.toggle('active');
+      dropdown.style.display = isActive ? "block" : "none";
+
+      // Check if overlay already exists
+      let overlayEle = document.querySelector('.quiz-overlay');
+
+      if (isActive) {
+        if (!overlayEle) {
+          // Create overlay
+          overlayEle = document.createElement('div');
+          overlayEle.className = 'quiz-overlay';
+
+   
+          const closeBtn = document.createElement('button');
+          closeBtn.className = 'close-overlay';
+          closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto" data-v-0e900098=""><rect y="0.00012207" width="32" height="32" fill="black"></rect><path d="M20.3043 22.0001L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10.0001L15.9739 14.3306L11.6696 10.0001L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22.0001L15.9739 17.6958L20.3043 22.0001Z" fill="white"></path></svg>`;
+
+          // Add click handler to close button
+          closeBtn.addEventListener('click', () => {
+            dropdown.classList.remove('active');
+            dropdown.style.display = 'none';
+            overlayEle.remove();
+          });
+
+          overlayEle.appendChild(closeBtn);
+          document.body.appendChild(overlayEle);
+        }
+      } else {
+        if (overlayEle) {
+          overlayEle.remove();
+        }
       }
-    });
+    }
   });
+});
 
   skinTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI") {
@@ -317,6 +346,11 @@ document.addEventListener("DOMContentLoaded", () => {
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
+
+        const overlayEle = document.querySelector('.quiz-overlay');
+        if (overlayEle) {
+          overlayEle.remove();
+        }
       filterProductTypes(selectedSkinType);
     }
   });
@@ -350,6 +384,10 @@ document.addEventListener("DOMContentLoaded", () => {
         concernSelect.appendChild(li);
       });
     }
+    const overlayEle = document.querySelector('.quiz-overlay');
+        if (overlayEle) {
+          overlayEle.remove();
+        }
   });
 
   concernSelect.addEventListener("click", function (e) {
@@ -363,7 +401,12 @@ document.addEventListener("DOMContentLoaded", () => {
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
+
     }
+    const overlayEle = document.querySelector('.quiz-overlay');
+        if (overlayEle) {
+          overlayEle.remove();
+        }
   });
 
   searchButton.addEventListener("click", function () {
