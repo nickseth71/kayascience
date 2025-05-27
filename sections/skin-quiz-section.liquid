@@ -145,10 +145,25 @@ skinTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedProductType = e.target.getAttribute("value");
       document.querySelector('.js-search-products').setAttribute("data-product-type", selectedProductType);
+      const allItems = this.querySelectorAll("li");
+      allItems.forEach(li => li.classList.remove("active"));
+
+      e.target.classList.add("active");
 
       const products = window.collectionsProductsMetafields[selectedProductType] || [];
       const concernsSet = new Set();
- 
+      const targetHeading = this.previousElementSibling;
+      
+      const dropdownList = targetHeading.nextElementSibling;
+       if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
+      targetHeading.innerText = e.target.innerText;
+
+      const dropdownList = targetHeading.nextElementSibling;
+      if (dropdownList) {
+        dropdownList.style.display = 'none';
+        dropdownList.classList.remove('active');
+      }
+    }
       products.forEach(prod => {
         const meta = prod.metafield;
         if (Array.isArray(meta)) {
@@ -176,6 +191,23 @@ skinTypeSelect.addEventListener("click", function (e) {
   // Concern selection
   concernSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
+      const allItems = this.querySelectorAll("li");
+      allItems.forEach(li => li.classList.remove("active"));
+
+      e.target.classList.add("active");
+
+      const targetHeading = this.previousElementSibling;
+      
+      const dropdownList = targetHeading.nextElementSibling;
+       if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
+      targetHeading.innerText = e.target.innerText;
+
+      const dropdownList = targetHeading.nextElementSibling;
+      if (dropdownList) {
+        dropdownList.style.display = 'none';
+        dropdownList.classList.remove('active');
+      }
+    }
       selectedConcern = e.target.getAttribute("value");
       document.querySelector('.js-search-products').setAttribute("data-concern-type", selectedConcern);
     }
