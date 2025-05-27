@@ -1872,6 +1872,14 @@ body.cart .quantity__button {
 }
 
 @media (max-width: 749px) {
+  button.close-overlay {
+    padding: 0;
+    background: transparent;
+    border: none;
+    right: 0;
+    position: absolute;
+    bottom: 210px;
+}
   .quiz-overlay {
     position: fixed;
     top: 0;
@@ -1887,7 +1895,7 @@ body.cart .quantity__button {
     padding: 5px;
 }
 .selected-data-content ul.type-data-content li.active{background: #f3efe9; color: #000;} 
-  .selected-data-content ul.type-data-content {z-index: 9999!important;position: fixed; top: auto; left: 0; right: 0; bottom: 0;background: #fff;padding:20px}
+  .selected-data-content ul.type-data-content {overflow-y: auto; height:210px;z-index: 9999!important;position: fixed; top: auto; left: 0; right: 0; bottom: 0;background: #fff;padding:20px}
   .skin-quiz__content-wrapper span,.selected-data-content .dropdown-heading {font-size: 14px!important;}
   .skin-quiz__content-wrapper .main-data-wrapper{width:100%}
 .section-routine-kits.multicolumn .multicolumn-list .multicolumn-list__item.grid__item:last-child  {
