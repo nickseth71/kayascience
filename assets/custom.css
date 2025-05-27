@@ -5512,15 +5512,21 @@ body.blog .blog-content-wrap .card__information {
     margin: 0 10px;
 }
 .selected-data-content {
-    position: relative;
+    position: relative;    padding: 0 10px;
 }
 
-.selected-data-content ul.js_col_label {
+.selected-data-content ul.type-data-content {
     position: absolute;
     top: 0;
-    padding: 0;
+    padding: 6px;
     list-style: none;
     white-space: nowrap;
     margin: 0;
-    background: #fff;
+    background: #fff;right:0;border:solid 1px rgba(0, 0, 0, 0.03)
+}
+.selected-data-content ul.type-data-content  li {font-size: 13px; cursor: pointer;}
+.selected-data-content .dropdown-heading {
+    font-size: 22px;
+    font-weight: bold;
+    opacity: .5;cursor: pointer;
 }
