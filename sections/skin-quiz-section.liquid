@@ -1,84 +1,78 @@
+<!-- Skin Quiz HTML Markup -->
 <div class="skin-quiz__section-wrapper">
   <div class="page-width">
     <div class="skin-quiz__content-wrapper">
+
+      <!-- Skin Type Section -->
       <div class="skin-multiType__data-wrapper main-data-wrapper">
         <span>For</span>
         <div class="skin-type__content-wrapp selected-data-content">
           {% if section.settings.heading1 != blank %}
-          <div class="dropdown-heading">
-            {{ section.settings.heading1 }}
-         
-          </div>
+          <div class="dropdown-heading">{{ section.settings.heading1 }}</div>
           {% endif %}
           <ul class="js_col_label skin-type-data type-data-content" style="display:none;">
             {% for i in (1..5) %}
-              {% capture col_label  %}col_label{{i}}{% endcapture %}
+              {% capture col_label %}col_label{{ i }}{% endcapture %}
               {% capture label_key %}col_trigger{{ i }}{% endcapture %}
               {% assign group_label = section.settings[label_key] | handle %}
               {% if section.settings[col_label] != blank %}
-                <li data-value="{{ group_label }}" >
-                  {{ section.settings[col_label] }}
-                </li>
+                <li data-value="{{ group_label }}">{{ section.settings[col_label] }}</li>
               {% endif %}
             {% endfor %}
           </ul>
-        </div> 
-      </div>
-      <div class="skin-productType__data-wrapper main-data-wrapper">
-      <span>I'm looking for</span>
-      <div class="product-type__content-wrapp selected-data-content">
-        {% if section.settings.heading2 != blank %}
-        <div class="dropdown-heading">
-          {{ section.settings.heading2 }}
-        
-       </div>
-        {% endif %}
-        <ul id="product-type-select" class="js_col_list product-type-data type-data-content" style="display:none;">
-          <li disabled selected>Any Product</li>
-          {% for i in (1..5) %}
-            {% capture col_listing %}col_list{{ i }}{% endcapture %}
-            {% capture label_key %}col_trigger{{ i }}{% endcapture %}
-            {% assign group_label = section.settings[label_key] | handle %}
-            {% for collection in section.settings[col_listing] %}
-              {% assign coll_obj = collections[collection.handle] %}
-              {% if coll_obj %}
-                <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">
-                  {{ coll_obj.title }}
-                </li>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </ul>
-      </div>
+        </div>
       </div>
 
-      <div class="skin-concern__data-wrapper  main-data-wrapper">
-          <span>that targets any concern</span>
-          <div class="concern-type__content-wrapp selected-data-content">
-            {% if section.settings.heading3 != blank %}
-            <div class="dropdown-heading">
-              {{ section.settings.heading3 }}
-                
-            </div>
-            {% endif %}
-            <ul id="product-concern-select" class="js_concern_list concern-type-data type-data-content" style="display:none;">
-              <li disabled selected>Any Concern</li>
-            </ul>
-          </div>
-      </div>
-      {% if section.settings.search_btn_label != blank %}
-        <div class="search_btn_label_wrapp">
-          <div class="button js-search-products" data-product-type="" data-concern-type="">
-            {{ section.settings.search_btn_label }}
-          </div>
+      <!-- Product Type Section -->
+      <div class="skin-productType__data-wrapper main-data-wrapper">
+        <span>I'm looking for</span>
+        <div class="product-type__content-wrapp selected-data-content">
+          {% if section.settings.heading2 != blank %}
+          <div class="dropdown-heading">{{ section.settings.heading2 }}</div>
+          {% endif %}
+          <ul id="product-type-select" class="js_col_list product-type-data type-data-content" style="display:none;">
+            <li disabled selected>Any Product</li>
+            {% for i in (1..5) %}
+              {% capture col_listing %}col_list{{ i }}{% endcapture %}
+              {% capture label_key %}col_trigger{{ i }}{% endcapture %}
+              {% assign group_label = section.settings[label_key] | handle %}
+              {% for collection in section.settings[col_listing] %}
+                {% assign coll_obj = collections[collection.handle] %}
+                {% if coll_obj %}
+                  <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">{{ coll_obj.title }}</li>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </ul>
         </div>
+      </div>
+
+      <!-- Concern Section -->
+      <div class="skin-concern__data-wrapper main-data-wrapper">
+        <span>that targets any concern</span>
+        <div class="concern-type__content-wrapp selected-data-content">
+          {% if section.settings.heading3 != blank %}
+          <div class="dropdown-heading">{{ section.settings.heading3 }}</div>
+          {% endif %}
+          <ul id="product-concern-select" class="js_concern_list concern-type-data type-data-content" style="display:none;">
+            <li disabled selected>Any Concern</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      {% if section.settings.search_btn_label != blank %}
+      <div class="search_btn_label_wrapp">
+        <div class="button js-search-products">{{ section.settings.search_btn_label }}</div>
+      </div>
       {% endif %}
+
     </div>
   </div>
 </div>
 
 
-
+{% comment %} 
 <script>
 window.collectionsProductsMetafields = {
   {% for collection in collections %}
@@ -131,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Skin type selection
 skinTypeSelect.addEventListener("click", function (e) {
+   selectedSkinType = e.target.getAttribute("value");
   if (e.target.tagName === "LI") {
     const selectedGroup = e.target.getAttribute("data-value");
     filterProductTypes(selectedGroup);
@@ -143,7 +138,8 @@ skinTypeSelect.addEventListener("click", function (e) {
     const targetHeading = this.previousElementSibling;
     if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
       targetHeading.innerText = e.target.innerText;
-
+      const skinSelectedType = e.target.innerText;
+      document.cookie = `skinType=${encodeURIComponent(skinSelectedType)}; path=/; max-age=86400`;
       const dropdownList = targetHeading.nextElementSibling;
       if (dropdownList) {
         dropdownList.style.display = 'none';
@@ -158,6 +154,7 @@ skinTypeSelect.addEventListener("click", function (e) {
   productTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedProductType = e.target.getAttribute("value");
+      document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
       document.querySelector('.js-search-products').setAttribute("data-product-type", selectedProductType);
       const allItems = this.querySelectorAll("li");
       allItems.forEach(li => li.classList.remove("active"));
@@ -224,6 +221,7 @@ skinTypeSelect.addEventListener("click", function (e) {
     }
       selectedConcern = e.target.getAttribute("value");
       document.querySelector('.js-search-products').setAttribute("data-concern-type", selectedConcern);
+      document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
     }
   });
 
@@ -232,7 +230,7 @@ skinTypeSelect.addEventListener("click", function (e) {
     if (!selectedProductType || !selectedConcern) return;
 
   // Store values in cookies (expire in 1 day)
-  {% comment %} document.cookie = `skinType=${encodeURIComponent(selectedSkinType)}; path=/; max-age=86400`; {% endcomment %}
+  
   document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
   document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
 
@@ -250,9 +248,147 @@ skinTypeSelect.addEventListener("click", function (e) {
   }
 
 });
+</script> {% endcomment %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  window.collectionsProductsMetafields = {
+  {% for collection in collections %}
+    "{{ collection.handle }}": [
+      {% for product in collection.products %}
+        {
+          id: "{{ product.id }}",
+          title: "{{ product.title | escape }}",
+          metafield: {{ product.metafields.custom.concern_filter.value | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+};
+  let selectedSkinType = "";
+  let selectedProductType = "";
+  let selectedConcern = "";
+
+  const skinTypeSelect = document.querySelector(".js_col_label");
+  const productTypeSelect = document.querySelector(".js_col_list");
+  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
+  const concernSelect = document.getElementById("product-concern-select");
+  const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
+  const searchButton = document.querySelector('.js-search-products');
+
+  const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+  }
+
+  function filterProductTypes(selectedGroup) {
+    productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
+    allProductOptionsCloned.forEach(li => {
+      if (li.dataset.group === selectedGroup) {
+        productTypeSelect.appendChild(li.cloneNode(true));
+      }
+    });
+    concernSelect.innerHTML = '<li disabled selected>Any Concern</li>';
+  }
+
+  dropdownHeadings.forEach(heading => {
+    heading.addEventListener('click', () => {
+      const dropdown = heading.nextElementSibling;
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (dropdown) {
+        dropdown.classList.toggle('active');
+        overlayEle.classList.toggle('active');
+        dropdown.style.display = dropdown.classList.contains('active') ? "block" : "none";
+      }
+    });
+  });
+
+  skinTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI") {
+      selectedSkinType = e.target.getAttribute("data-value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+      const heading = this.previousElementSibling;
+      if (heading && heading.classList.contains('dropdown-heading')) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+      filterProductTypes(selectedSkinType);
+    }
+  });
+
+  productTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedProductType = e.target.getAttribute("value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+      const heading = this.previousElementSibling;
+      if (heading && heading.classList.contains('dropdown-heading')) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+
+      const products = window.collectionsProductsMetafields[selectedProductType] || [];
+      const concernsSet = new Set();
+      products.forEach(prod => {
+        const meta = prod.metafield;
+        if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
+        else if (typeof meta === "string") concernsSet.add(meta.trim());
+        else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
+      });
+
+      concernSelect.innerHTML = concernsSet.size > 0 ? '<li disabled selected>Any Concern</li>' : '<li disabled selected>No concerns available</li>';
+      concernsSet.forEach(concern => {
+        const li = document.createElement("li");
+        li.setAttribute("value", concern);
+        li.textContent = concern;
+        concernSelect.appendChild(li);
+      });
+    }
+  });
+
+  concernSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedConcern = e.target.getAttribute("value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+      const heading = this.previousElementSibling;
+      if (heading && heading.classList.contains('dropdown-heading')) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+    }
+  });
+
+  searchButton.addEventListener("click", function () {
+    if (!selectedSkinType || !selectedProductType || !selectedConcern) {
+      alert("Please select skin type, product type, and concern.");
+      return;
+    }
+
+    document.cookie = `skinType=${encodeURIComponent(selectedSkinType)}; path=/; max-age=86400`;
+    document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
+    document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
+
+    const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
+    window.location.href = url;
+  });
+
+  const firstSkinType = skinTypeSelect.querySelector("li[data-value]");
+  if (firstSkinType) {
+    selectedSkinType = firstSkinType.getAttribute("data-value");
+    firstSkinType.classList.add("active");
+    filterProductTypes(selectedSkinType);
+  }
+});
 </script>
-
-
+ 
 
 
 {% schema %}
