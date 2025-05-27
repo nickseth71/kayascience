@@ -50,7 +50,7 @@ any concern</span>
 </div>
 {% if section.settings.search_btn_label != blank %}
 <div class="search_btn_label_wrapp">
-<div class="button js-search-products">
+<div class="button js-search-products" data-product-type="" data-concern-type="">
     {{ section.settings.search_btn_label }}
 </div>
 </div>
@@ -66,7 +66,7 @@ window.collectionsProductsMetafields = {
         {
           id: "{{ product.id }}",
           title: "{{ product.title | escape }}",
-          metafield: "{{ product.metafields.custom.concern_filter | escape }}"
+          metafield:  {{ product.metafields.custom.concern_filter.value | json }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ]{% unless forloop.last %},{% endunless %}
@@ -87,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         productTypeSelect.appendChild(option.cloneNode(true));
       }
     });
-    // Reset concerns when product type list changes
     concernSelect.innerHTML = '<option disabled selected>Any Concern</option>';
   }
 
@@ -95,33 +94,30 @@ document.addEventListener("DOMContentLoaded", () => {
     filterProductTypes(this.value);
   });
 
-  // If skin type pre-selected on page load
   if (skinTypeSelect.value) {
     filterProductTypes(skinTypeSelect.value);
   }
 
-  // Populate concerns based on selected product type (collection)
-  productTypeSelect.addEventListener("change", function() {
+  // Only ONE event listener for concern dropdown logic
+  productTypeSelect.addEventListener("change", function () {
     const selectedCollection = this.value;
     const products = window.collectionsProductsMetafields[selectedCollection] || [];
 
-    // Get unique metafield values
     const concernsSet = new Set();
-        products.forEach(prod => {
-        if (prod.metafield && prod.metafield.trim() !== "") {
-            try {
-            const arr = JSON.parse(prod.metafield);
-            if (Array.isArray(arr)) {
-                arr.forEach(item => concernsSet.add(item));
-            } else {
-                concernsSet.add(prod.metafield);
-            }
-            } catch(e) {
-            concernsSet.add(prod.metafield);
-            }
-        }
-        });
+    const searchProductButton = document.querySelector('.js-search-products');
+    searchProductButton.setAttribute("data-product-type",selectedCollection);
+   products.forEach(prod => {
+    console.log('Metafield Raw:', prod.metafield); // debug
 
+        if (Array.isArray(prod.metafield)) {
+          prod.metafield.forEach(item => concernsSet.add(item.trim()));
+        } else if (typeof prod.metafield === "string") {
+          concernsSet.add(prod.metafield.trim());
+        } else if (prod.metafield && typeof prod.metafield === "object") {
+          Object.values(prod.metafield).forEach(val => concernsSet.add(val.trim()));
+        }
+      });
+ 
     concernSelect.innerHTML = '<option disabled selected>Any Concern</option>';
 
     if (concernsSet.size === 0) {
@@ -135,8 +131,36 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  //concern type selection start
+  concernSelect.addEventListener("change", function(){
+    const selectedConcern = this.value;
+    const searchProductButton = document.querySelector('.js-search-products');
+    searchProductButton.setAttribute("data-concern-type",selectedConcern);
+  });
+  //consern type selection end
+
+
+
+  document.querySelectorAll('.js-search-products').forEach(button => {
+  button.addEventListener("click", function() {
+    const concern = document.getElementById("product-concern-select").value;
+    const productType = document.querySelector(".js_col_list").value;
+
+    // Construct search query string
+    const searchQuery = `${productType}-build-regimen`;
+
+    // Build the full Shopify search URL
+    const url = `https://kayascience.com/search?sort_by=relevance&q=${encodeURIComponent(searchQuery)}&options[prefix]=last&filter.p.m.custom.concern_filter=${encodeURIComponent(concern)}`;
+
+    // Redirect to that URL
+    window.location.href = url;
+  });
+});
+
 });
 </script>
+
 
 
 {% schema %}
