@@ -1,6 +1,6 @@
 
 <div class="skin-quiz__section-wrapper">
-
+<div class="page-width">
   <div class="skin-quiz__content-wrapper page-width">
     <span>For</span>
     <div class="skin-type__content-wrapp">
@@ -57,7 +57,7 @@ any concern</span>
 {% endif %}
   </div>
 </div> 
-
+</div>
 <script>
 window.collectionsProductsMetafields = {
   {% for collection in collections %}
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const productType = document.querySelector(".js_col_list").value;
 
     // Construct search query string
-    const searchQuery = `${productType}-build-regimen`;
+    const searchQuery = `${productType}`;
 
     // Build the full Shopify search URL
     const url = `https://kayascience.com/search?sort_by=relevance&q=${encodeURIComponent(searchQuery)}&options[prefix]=last&filter.p.m.custom.concern_filter=${encodeURIComponent(concern)}`;

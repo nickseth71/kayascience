@@ -14,7 +14,7 @@
       "name": "Skin Quiz Section",
       "settings": {
         "col_trigger1": "face",
-        "col_label1": "For Face",
+        "col_label1": "My Face",
         "col_list1": [
           "acne-build-regimen",
           "aloe-vera",
@@ -22,7 +22,7 @@
           "dark-spots-build-regimen"
         ],
         "col_trigger2": "body",
-        "col_label2": "For Body",
+        "col_label2": "My Body",
         "col_list2": [
           "body-lotion",
           "build-regimen",
@@ -30,7 +30,7 @@
           "clogged-pores-build-regimen"
         ],
         "col_trigger3": "hair",
-        "col_label3": "For Hair",
+        "col_label3": "My Hair",
         "col_list3": [
           "damaged-hair",
           "hair-oil",
@@ -42,7 +42,7 @@
         "col_trigger5": "",
         "col_label5": "",
         "col_list5": [],
-        "butn_label": "Discover your match"
+        "search_btn_label": "Discover your match"
       }
     },
     "main": {
