@@ -1533,6 +1533,11 @@ facet-remove a .active-facets__button-inner {
   font-size: 20px !important;
 }
 @media (min-width: 750px) {
+  .selected-data-content ul.type-data-content {
+     padding: 3px 17px 6px 6px; right: 5px;
+     background: #fff url(/cdn/shop/files/quiz-arrow-up.svg?v=1748345055) no-repeat calc(100% - 3px) 10px;
+       position: absolute;
+    top: 0;}
   .address-number-text.addres_content { text-align: right;}
   td.cart-item__totals {
     position: absolute;
@@ -1867,6 +1872,24 @@ body.cart .quantity__button {
 }
 
 @media (max-width: 749px) {
+  .quiz-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .7);
+    display: block !important;
+    z-index: 990;
+}
+.selected-data-content ul.type-data-content li {
+    text-align: center;
+    padding: 5px;
+}
+.selected-data-content ul.type-data-content li.active{background: #f3efe9; color: #000;} 
+  .selected-data-content ul.type-data-content {z-index: 9999!important;position: fixed; top: auto; left: 0; right: 0; bottom: 0;background: #fff;padding:20px}
+  .skin-quiz__content-wrapper span,.selected-data-content .dropdown-heading {font-size: 14px!important;}
+  .skin-quiz__content-wrapper .main-data-wrapper{width:100%}
 .section-routine-kits.multicolumn .multicolumn-list .multicolumn-list__item.grid__item:last-child  {
     margin-right: 15px;
 }
@@ -5523,14 +5546,13 @@ body.blog .blog-content-wrap .card__information {
 }
 
 .selected-data-content ul.type-data-content {
-       position: absolute;
-    top: 0;
-    padding: 3px 17px 6px 6px;
+     
+   
     list-style: none;
     white-space: nowrap;
     margin: 0;
-    background: #fff url(/cdn/shop/files/quiz-arrow-up.svg?v=1748345055) no-repeat calc(100% - 3px) 10px;
-    right: 5px;
+   
+   
     border:solid 1px rgba(0, 0, 0, 0.03);
     background-size: 12px;z-index: 9;
 }
@@ -5551,6 +5573,6 @@ body.blog .blog-content-wrap .card__information {
 body.search-quiz-products .template-search__header {
     display: none;
 }
-main-data-wrapper {
+.skin-quiz__content-wrapper .main-data-wrapper {
     display: flex;
 }
