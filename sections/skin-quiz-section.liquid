@@ -6,7 +6,7 @@
         {% if section.settings.heading1 != blank %}
         <div class="dropdown-heading">{{ section.settings.heading1 }}</div>
         {% endif %}
-        <ul class="js_col_label skin-type-data" style="display:none;">
+        <ul class="js_col_label skin-type-data type-data-content" style="display:none;">
           {% for i in (1..5) %}
             {% capture col_label  %}col_label{{i}}{% endcapture %}
             {% capture label_key %}col_trigger{{ i }}{% endcapture %}
@@ -25,7 +25,7 @@
         {% if section.settings.heading2 != blank %}
         <div class="dropdown-heading">{{ section.settings.heading2 }}</div>
         {% endif %}
-        <ul id="product-type-select" class="js_col_list product-type-data" style="display:none;">
+        <ul id="product-type-select" class="js_col_list product-type-data type-data-content" style="display:none;">
           <li disabled selected>Any Product</li>
           {% for i in (1..5) %}
             {% capture col_listing %}col_list{{ i }}{% endcapture %}
@@ -48,7 +48,7 @@
         {% if section.settings.heading3 != blank %}
         <div class="dropdown-heading">{{ section.settings.heading3 }}</div>
         {% endif %}
-        <ul id="product-concern-select" class="js_concern_list concern-type-data" style="display:none;">
+        <ul id="product-concern-select" class="js_concern_list concern-type-data type-data-content" style="display:none;">
           <li disabled selected>Any Concern</li>
         </ul>
       </div>
