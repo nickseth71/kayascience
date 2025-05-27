@@ -5511,3 +5511,16 @@ body.blog .blog-content-wrap .card__information {
     border: none;
     margin: 0 10px;
 }
+.selected-data-content {
+    position: relative;
+}
+
+.selected-data-content ul.js_col_label {
+    position: absolute;
+    top: 0;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+    margin: 0;
+    background: #fff;
+}
