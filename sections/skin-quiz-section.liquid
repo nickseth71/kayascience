@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   dropdownHeadings.forEach(heading => {
     heading.addEventListener('click', () => {
       const dropdown = heading.nextElementSibling;
-      const overlayEle = document.querySelector('.quiz-overlay');
+     
       if (dropdown) {
         dropdown.classList.toggle('active');
         overlayEle.classList.toggle('active');
