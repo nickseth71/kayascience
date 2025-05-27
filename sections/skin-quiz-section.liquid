@@ -116,12 +116,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Skin type selection
-  skinTypeSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI") {
-      const selectedGroup = e.target.getAttribute("data-value");
-      filterProductTypes(selectedGroup);
+skinTypeSelect.addEventListener("click", function (e) {
+  if (e.target.tagName === "LI") {
+    const selectedGroup = e.target.getAttribute("data-value");
+    filterProductTypes(selectedGroup);
+
+    const allItems = this.querySelectorAll("li");
+    allItems.forEach(li => li.classList.remove("active"));
+
+    e.target.classList.add("active");
+
+    const targetHeading = this.previousElementSibling;
+    if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
+      targetHeading.innerText = e.target.innerText;
+
+      const dropdownList = targetHeading.nextElementSibling;
+      if (dropdownList) {
+        dropdownList.style.display = 'none';
+        dropdownList.classList.remove('active');
+      }
     }
-  });
+  }
+});
+
 
   // Product type selection
   productTypeSelect.addEventListener("click", function (e) {
@@ -167,10 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Search button click
   document.querySelector('.js-search-products').addEventListener("click", function () {
     if (!selectedProductType || !selectedConcern) return;
- {% comment %} const url = `https://kayascience.com/pages/search?q=${encodeURIComponent(selectedProductType)}&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`; {% endcomment %}
-    {% comment %} const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`; {% endcomment %}
-   
-   const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
+    const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
 
     window.location.href = url;
   }); 
@@ -180,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (firstSkinType) {
     const selectedGroup = firstSkinType.getAttribute("data-value");
     filterProductTypes(selectedGroup);
+
   }
 
 });
