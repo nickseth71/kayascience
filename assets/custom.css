@@ -3723,6 +3723,11 @@ li[data-address] .white-block p {
   align-items: center;
 }
 @media (max-width: 749px) {
+  .section-routine-kits.multicolumn .page-width {padding-top: 15px;
+        padding-bottom: 5px;}
+  .image-text__blockMain-wrapp .image-text-block-wrap .image-wrap {overflow: hidden;}
+  .image-text__blockMain-wrapp .image-text-block-wrap {max-width: 20%;}
+  .header__icon .icon{width: 1.7rem; height: 1.7rem;}
   .header__icon--search{height: 30px;}
   .header__heading, .header__heading-link {max-width: 80px;}
   .qv_info_wrapper .product__tax {
