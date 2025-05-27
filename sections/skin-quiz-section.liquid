@@ -310,7 +310,7 @@ dropdownHeadings.forEach(heading => {
           // Create overlay
           overlayEle = document.createElement('div');
           overlayEle.className = 'quiz-overlay';
-
+         
    
           const closeBtn = document.createElement('button');
           closeBtn.className = 'close-overlay';
@@ -413,7 +413,7 @@ dropdownHeadings.forEach(heading => {
     if (!selectedSkinType || !selectedProductType || !selectedConcern) {
       alert("Please select skin type, product type, and concern.");
       return;
-    }
+  }
 
     document.cookie = `skinType=${encodeURIComponent(selectedSkinType)}; path=/; max-age=86400`;
     document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
