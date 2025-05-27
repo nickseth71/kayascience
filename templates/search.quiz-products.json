@@ -11,15 +11,16 @@
   "sections": {
     "main": {
       "type": "main-search",
-      "settings": {
+        "settings": {
         "columns_desktop": 4,
         "image_ratio": "adapt",
+        "quick_add": "standard",
         "image_shape": "default",
-        "show_secondary_image": false,
+        "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "enable_filtering": false,
-        "filter_type": "horizontal",
+        "filter_type": "vertical",
         "enable_sorting": false,
         "article_show_date": false,
         "article_show_author": false,
