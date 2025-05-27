@@ -18,18 +18,57 @@
         "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
-        "enable_filtering": true,
+        "enable_filtering": false,
         "filter_type": "horizontal",
-        "enable_sorting": true,
-        "article_show_date": true,
+        "enable_sorting": false,
+        "article_show_date": false,
         "article_show_author": false,
         "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+      "skin-quiz-section": {
+      "type": "skin-quiz-section",
+      "name": "Skin Quiz Section",
+      "settings": {
+        "col_trigger1": "face",
+        "col_label1": "My Face",
+        "col_list1": [
+          "acne-build-regimen",
+          "aloe-vera",
+          "anti-aging-1",
+          "dark-spots-build-regimen"
+        ],
+        "col_trigger2": "body",
+        "col_label2": "My Body",
+        "col_list2": [
+          "body-lotion",
+          "build-regimen",
+          "calluses",
+          "clogged-pores-build-regimen"
+        ],
+        "col_trigger3": "hair",
+        "col_label3": "My Hair",
+        "col_list3": [
+          "damaged-hair",
+          "hair-oil",
+          "hair-serum"
+        ],
+        "col_trigger4": "",
+        "col_label4": "",
+        "col_list4": [],
+        "col_trigger5": "",
+        "col_label5": "",
+        "col_list5": [],
+        "search_btn_label": "Discover your match"
+      }
     }
   },
   "order": [
+
+    "skin-quiz-section",
     "main"
   ]
-}
+} 
+ 

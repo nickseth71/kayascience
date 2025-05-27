@@ -1,63 +1,70 @@
-
 <div class="skin-quiz__section-wrapper">
-<div class="page-width">
-  <div class="skin-quiz__content-wrapper">
-    <span>For</span>
-    <div class="skin-type__content-wrapp">
-      <select class="js_col_label skin-type-data">
-        {% for i in (1..5) %}
-          {% capture col_label  %}col_label{{i}}{% endcapture %}
-           {% capture label_key %}col_trigger{{ i }}{% endcapture %}
-          {% assign group_label = section.settings[label_key] | handle %}
-          {% if section.settings[col_label] != blank %}
-            <option value="{{ group_label }}">
-              {{ section.settings[col_label] }}
-            </option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </div> 
-
-  <span>  I'm looking for</span>
-    <div class="product-type__content-wrapp">
-      <select id="product-type-select" class="js_col_list product-type-data">
-        <option disabled selected>Any Product</option>
-        {% for i in (1..5) %}
-          {% capture col_listing %}col_list{{ i }}{% endcapture %}
-          {% capture label_key %}col_trigger{{ i }}{% endcapture %}
-          {% assign group_label = section.settings[label_key] | handle %}
-          
-          {% for collection in section.settings[col_listing] %}
-            {% assign coll_obj = collections[collection.handle] %}
-            {% if coll_obj %}
-              <option value="{{ coll_obj.handle }}" data-group="{{ group_label }}">
-                {{ coll_obj.title }}
-              </option>
+  <div class="page-width">
+    <div class="skin-quiz__content-wrapper">
+      <span>For</span>
+      <div class="skin-type__content-wrapp">
+        {% if section.settings.heading1 != blank %}
+        <div class="dropdown-heading">{{ section.settings.heading1 }}</div>
+        {% endif %}
+        <ul class="js_col_label skin-type-data" style="display:none;">
+          {% for i in (1..5) %}
+            {% capture col_label  %}col_label{{i}}{% endcapture %}
+            {% capture label_key %}col_trigger{{ i }}{% endcapture %}
+            {% assign group_label = section.settings[label_key] | handle %}
+            {% if section.settings[col_label] != blank %}
+              <li data-value="{{ group_label }}" >
+                {{ section.settings[col_label] }}
+              </li>
             {% endif %}
           {% endfor %}
-        {% endfor %}
-      </select>
+        </ul>
+      </div> 
+
+      <span>I'm looking for</span>
+      <div class="product-type__content-wrapp">
+        {% if section.settings.heading2 != blank %}
+        <div class="dropdown-heading">{{ section.settings.heading2 }}</div>
+        {% endif %}
+        <ul id="product-type-select" class="js_col_list product-type-data" style="display:none;">
+          <li disabled selected>Any Product</li>
+          {% for i in (1..5) %}
+            {% capture col_listing %}col_list{{ i }}{% endcapture %}
+            {% capture label_key %}col_trigger{{ i }}{% endcapture %}
+            {% assign group_label = section.settings[label_key] | handle %}
+            {% for collection in section.settings[col_listing] %}
+              {% assign coll_obj = collections[collection.handle] %}
+              {% if coll_obj %}
+                <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">
+                  {{ coll_obj.title }}
+                </li>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <span>that targets any concern</span>
+      <div class="concern-type__content-wrapp">
+        {% if section.settings.heading3 != blank %}
+        <div class="dropdown-heading">{{ section.settings.heading3 }}</div>
+        {% endif %}
+        <ul id="product-concern-select" class="js_concern_list concern-type-data" style="display:none;">
+          <li disabled selected>Any Concern</li>
+        </ul>
+      </div>
+
+      {% if section.settings.search_btn_label != blank %}
+        <div class="search_btn_label_wrapp">
+          <div class="button js-search-products" data-product-type="" data-concern-type="">
+            {{ section.settings.search_btn_label }}
+          </div>
+        </div>
+      {% endif %}
     </div>
-   <span> that targets 
-any concern</span>
-
-
-<div class="concern-type__content-wrapp">
-<select id="product-concern-select" class="js_concern_list concern-type-data">
-<option disabled selected>Any Concern</option>
-
-</select>
-</div>
-{% if section.settings.search_btn_label != blank %}
-<div class="search_btn_label_wrapp">
-<div class="button js-search-products" data-product-type="" data-concern-type="">
-    {{ section.settings.search_btn_label }}
-</div>
-</div>
-{% endif %}
   </div>
-</div> 
 </div>
+
+
 <script>
 window.collectionsProductsMetafields = {
   {% for collection in collections %}
@@ -66,7 +73,7 @@ window.collectionsProductsMetafields = {
         {
           id: "{{ product.id }}",
           title: "{{ product.title | escape }}",
-          metafield:  {{ product.metafields.custom.concern_filter.value | json }}
+          metafield: {{ product.metafields.custom.concern_filter.value | json }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ]{% unless forloop.last %},{% endunless %}
@@ -76,91 +83,108 @@ window.collectionsProductsMetafields = {
 document.addEventListener("DOMContentLoaded", () => {
   const skinTypeSelect = document.querySelector(".js_col_label");
   const productTypeSelect = document.querySelector(".js_col_list");
-  const allOptions = Array.from(productTypeSelect.querySelectorAll("option[data-group]"));
+  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
   const concernSelect = document.getElementById("product-concern-select");
+  const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
+  let selectedProductType = "";
+  let selectedConcern = "";
 
-  // Filter product types based on selected skin type
+  // Clone and store product options
+  const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
+
   function filterProductTypes(selectedGroup) {
-    productTypeSelect.innerHTML = '<option disabled selected>Any Product</option>';
-    allOptions.forEach(option => {
-      if (option.dataset.group === selectedGroup) {
-        productTypeSelect.appendChild(option.cloneNode(true));
+    productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
+    allProductOptionsCloned.forEach(li => {
+      if (li.dataset.group === selectedGroup) {
+        productTypeSelect.appendChild(li.cloneNode(true));
       }
     });
-    concernSelect.innerHTML = '<option disabled selected>Any Concern</option>';
+
+    // Reset concerns
+    concernSelect.innerHTML = '<li disabled selected>Any Concern</li>';
   }
 
-  skinTypeSelect.addEventListener("change", function () {
-    filterProductTypes(this.value);
+  // Dropdown toggle
+  dropdownHeadings.forEach(function(heading) {
+    heading.addEventListener('click', function() {
+      const dropdown = heading.nextElementSibling;
+      if (dropdown) {
+        dropdown.classList.toggle('active');
+        dropdown.style.display = dropdown.classList.contains('active') ? "block" : "none";
+      }
+    });
   });
 
-  if (skinTypeSelect.value) {
-    filterProductTypes(skinTypeSelect.value);
-  }
+  // Skin type selection
+  skinTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI") {
+      const selectedGroup = e.target.getAttribute("data-value");
+      filterProductTypes(selectedGroup);
+    }
+  });
 
-  // Only ONE event listener for concern dropdown logic
-  productTypeSelect.addEventListener("change", function () {
-    const selectedCollection = this.value;
-    const products = window.collectionsProductsMetafields[selectedCollection] || [];
+  // Product type selection
+  productTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedProductType = e.target.getAttribute("value");
+      document.querySelector('.js-search-products').setAttribute("data-product-type", selectedProductType);
 
-    const concernsSet = new Set();
-    const searchProductButton = document.querySelector('.js-search-products');
-    searchProductButton.setAttribute("data-product-type",selectedCollection);
-   products.forEach(prod => {
-    console.log('Metafield Raw:', prod.metafield); // debug
-
-        if (Array.isArray(prod.metafield)) {
-          prod.metafield.forEach(item => concernsSet.add(item.trim()));
-        } else if (typeof prod.metafield === "string") {
-          concernsSet.add(prod.metafield.trim());
-        } else if (prod.metafield && typeof prod.metafield === "object") {
-          Object.values(prod.metafield).forEach(val => concernsSet.add(val.trim()));
+      const products = window.collectionsProductsMetafields[selectedProductType] || [];
+      const concernsSet = new Set();
+ 
+      products.forEach(prod => {
+        const meta = prod.metafield;
+        if (Array.isArray(meta)) {
+          meta.forEach(val => concernsSet.add(val.trim()));
+        } else if (typeof meta === "string") {
+          concernsSet.add(meta.trim());
+        } else if (typeof meta === "object" && meta !== null) {
+          Object.values(meta).forEach(val => concernsSet.add(val.trim()));
         }
       });
- 
-    concernSelect.innerHTML = '<option disabled selected>Any Concern</option>';
 
-    if (concernsSet.size === 0) {
-      concernSelect.innerHTML = '<option disabled selected>No concerns available</option>';
-    } else {
+      concernSelect.innerHTML = concernsSet.size > 0
+        ? '<li disabled selected>Any Concern</li>'
+        : '<li disabled selected>No concerns available</li>';
+
       concernsSet.forEach(concern => {
-        const option = document.createElement("option");
-        option.value = concern;
-        option.textContent = concern;
-        concernSelect.appendChild(option);
+        const li = document.createElement("li");
+        li.setAttribute("value", concern);
+        li.textContent = concern;
+        concernSelect.appendChild(li);
       });
     }
   });
 
-  //concern type selection start
-  concernSelect.addEventListener("change", function(){
-    const selectedConcern = this.value;
-    const searchProductButton = document.querySelector('.js-search-products');
-    searchProductButton.setAttribute("data-concern-type",selectedConcern);
+  // Concern selection
+  concernSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedConcern = e.target.getAttribute("value");
+      document.querySelector('.js-search-products').setAttribute("data-concern-type", selectedConcern);
+    }
   });
-  //consern type selection end
 
+  // Search button click
+  document.querySelector('.js-search-products').addEventListener("click", function () {
+    if (!selectedProductType || !selectedConcern) return;
+ {% comment %} const url = `https://kayascience.com/pages/search?q=${encodeURIComponent(selectedProductType)}&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`; {% endcomment %}
+    {% comment %} const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`; {% endcomment %}
+   
+   const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
 
-
-  document.querySelectorAll('.js-search-products').forEach(button => {
-  button.addEventListener("click", function() {
-    const concern = document.getElementById("product-concern-select").value;
-    const productType = document.querySelector(".js_col_list").value;
-
-    // Construct search query string
-    const searchQuery = `${productType}`;
-
-    // Build the full Shopify search URL
-   const url = `https://kayascience.com/collections/${encodeURIComponent(searchQuery)}?filter.p.m.custom.concern_filter=${encodeURIComponent(concern)}`; 
-    {% comment %} const url = `https://kayascience.com/search?sort_by=relevance&q=${encodeURIComponent(searchQuery)}&options[prefix]=last&filter.p.m.custom.concern_filter=${encodeURIComponent(concern)}`; {% endcomment %}
-
-    // Redirect to that URL
     window.location.href = url;
-  });
-});
+  }); 
+ 
+  //  Auto-select first skin type on load
+  const firstSkinType = skinTypeSelect.querySelector("li[data-value]");
+  if (firstSkinType) {
+    const selectedGroup = firstSkinType.getAttribute("data-value");
+    filterProductTypes(selectedGroup);
+  }
 
 });
 </script>
+
 
 
 
@@ -168,6 +192,28 @@ document.addEventListener("DOMContentLoaded", () => {
 {
   "name": "Skin Quiz section",
   "settings": [
+     {
+        "type": "header",
+        "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading1",
+      "label":"Heading[1]",
+      "default":"My Hair"
+    },
+      {
+      "type": "text",
+      "id": "heading2",
+      "label":"Heading[2]",
+      "default":"Any Product"
+    },
+      {
+      "type": "text",
+      "id": "heading3",
+      "label":"Heading[3]",
+      "default":"Any Concern"
+    },
     {
         "type": "header",
         "content": "Content [1]"
