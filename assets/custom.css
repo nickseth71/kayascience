@@ -1890,6 +1890,7 @@ body.cart .quantity__button {
     position: absolute;
    
 }
+.dropdown-open .quiz-overlay {display: block!important;}
   .quiz-overlay {
     position: fixed;
     top: 0;
