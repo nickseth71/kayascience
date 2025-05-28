@@ -11,29 +11,28 @@
   "sections": {
     "skin_quiz_section_HBDtmR": {
       "type": "skin-quiz-section",
-      "name": "Skin Quiz Section",
       "settings": {
-        "col_trigger1": "face",
-        "col_label1": "My Face",
+        "heading1": "My Hair",
+        "heading2": "Any Product",
+        "heading3": "Any Concern",
+        "col_trigger1": "skin",
+        "col_label1": "My Skin",
         "col_list1": [
-          "acne-build-regimen",
-          "aloe-vera",
-          "anti-aging-1",
-          "dark-spots-build-regimen"
+          "face-toner",
+          "face-cream"
         ],
         "col_trigger2": "body",
-        "col_label2": "My Body",
+        "col_label2": "For Body",
         "col_list2": [
+          "shower-gel-1",
           "body-lotion",
-          "build-regimen",
-          "calluses",
-          "clogged-pores-build-regimen"
+          "foot-cream"
         ],
         "col_trigger3": "hair",
-        "col_label3": "My Hair",
+        "col_label3": "For Hair",
         "col_list3": [
-          "damaged-hair",
-          "hair-oil",
+          "shampoo-1",
+          "lotion",
           "hair-serum"
         ],
         "col_trigger4": "",

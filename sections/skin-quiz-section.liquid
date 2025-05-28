@@ -73,10 +73,9 @@
 
 
 
- <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
-
-function getCookie(name) {
+  function getCookie(name) {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     return match ? decodeURIComponent(match[2]) : null;
   }
@@ -107,7 +106,6 @@ function getCookie(name) {
   const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
   const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
 
- 
   function filterProductTypes(selectedGroup) {
     selectedProductType = "";
     productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
@@ -125,12 +123,11 @@ function getCookie(name) {
       productHeading.innerText = "Any Product";
     }
 
-    concernSelect.innerHTML = '<li selected>Any Concern</li>';
-     concernSelect.innerHTML = '';
-      const anyLi = document.createElement('li');
-      {% comment %} anyLi.textContent = "Any Concern"; {% endcomment %}
-      anyLi.setAttribute("value", "");
-      concernSelect.appendChild(anyLi);
+    concernSelect.innerHTML = '';
+    const anyLi = document.createElement('li');
+    anyLi.setAttribute("value", "");
+    concernSelect.appendChild(anyLi);
+
     const concernHeading = concernSelect.previousElementSibling;
     if (concernHeading && concernHeading.classList.contains('dropdown-heading')) {
       concernHeading.innerText = "Any Concern";
@@ -139,35 +136,24 @@ function getCookie(name) {
     selectedConcern = "";
   }
 
-  dropdownHeadings.forEach(heading => {
-    heading.addEventListener('click', () => {
-      const dropdown = heading.nextElementSibling;
-      if (dropdown) {
-        const isActive = dropdown.classList.toggle('active');
-        dropdown.style.display = isActive ? "block" : "none";
+ dropdownHeadings.forEach(heading => {
+  heading.addEventListener('click', () => {
+    const dropdown = heading.nextElementSibling;
 
-        {% comment %} let overlayEle = document.querySelector('.quiz-overlay'); {% endcomment %}
-        {% comment %} if (isActive) {
-          if (!overlayEle) {
-            overlayEle = document.createElement('div');
-            overlayEle.className = 'quiz-overlay';
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'close-overlay';
-            closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto"><rect width="32" height="32" fill="black"></rect><path d="M20.3043 22L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10L15.9739 14.3306L11.6696 10L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22L15.9739 17.6958L20.3043 22Z" fill="white"></path></svg>`;
-            closeBtn.addEventListener('click', () => {
-              dropdown.classList.remove('active');
-              dropdown.style.display = 'none';
-              overlayEle.remove();
-            });
-            overlayEle.appendChild(closeBtn);
-            document.body.appendChild(overlayEle);
-          }
-        } else if (overlayEle) {
-          overlayEle.remove();
-        } {% endcomment %}
+    if (dropdown) {
+      const isActive = dropdown.classList.toggle('active');
+      dropdown.style.display = isActive ? "block" : "none";
+
+      // Toggle body class based on dropdown state
+      if (isActive) {
+        document.body.classList.add('dropdown-open');
+      } else {
+        document.body.classList.remove('dropdown-open');
       }
-    });
+    }
   });
+});
+
 
   skinTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI") {
@@ -181,9 +167,6 @@ function getCookie(name) {
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
 
       filterProductTypes(selectedSkinType);
     }
@@ -221,9 +204,6 @@ function getCookie(name) {
 
       const concernHeading = concernSelect.previousElementSibling;
       if (concernHeading) concernHeading.innerText = "Any Concern";
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
     }
   });
 
@@ -239,9 +219,6 @@ function getCookie(name) {
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
     }
   });
 
@@ -257,8 +234,7 @@ function getCookie(name) {
     window.location.href = url;
   });
 
-
-    // Auto-select cookie values
+  // Auto-select cookie values on page load
   const skinLi = skinTypeSelect.querySelector(`li[data-value="${selectedSkinType}"]`);
   if (skinLi) {
     skinLi.classList.add("active");
@@ -271,7 +247,6 @@ function getCookie(name) {
         productLi.classList.add("active");
         productTypeSelect.previousElementSibling.innerText = productLi.innerText;
 
-        // Populate concern list based on selectedProductType
         const products = window.collectionsProductsMetafields[selectedProductType] || [];
         const concernsSet = new Set();
         products.forEach(prod => {
@@ -289,20 +264,19 @@ function getCookie(name) {
           concernSelect.appendChild(li);
         });
 
-        // Set concern from cookie
         setTimeout(() => {
           const concernLi = concernSelect.querySelector(`li[value="${selectedConcern}"]`);
           if (concernLi) {
             concernLi.classList.add("active");
             concernSelect.previousElementSibling.innerText = concernLi.innerText;
           }
-        }, 500);
+        }, 300);
       }
-    }, 550);
+    }, 300);
   }
 
+  // Close dropdowns when clicking outside
   document.addEventListener('click', function (e) {
-
     const isDropdownHeading = e.target.closest('.dropdown-heading');
     const isDropdownList = e.target.closest('.type-data-content');
     if (!isDropdownHeading && !isDropdownList) {
@@ -310,35 +284,10 @@ function getCookie(name) {
         el.classList.remove('active');
         el.style.display = 'none';
       });
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
-
-   setTimeout(() => {
-  var content = document.querySelector('#product-type-select');
-  var overlayButtons = document.querySelectorAll('button.close-overlay');
-  console.log("content<><>soumya", content);
-
-  if (content && overlayButtons.length > 0) {
-    var contentHeight = content.offsetHeight;
-    console.log("contentHeight<><>soumya", contentHeight);
-    overlayButtons.forEach(button => {
-      button.style.bottom = contentHeight + 'px';
-    });
-  }
-}, 10000);
-
     }
-  }); 
-
-
+  });
 });
-
-
-
-
-
 </script>
- 
 
 
 
