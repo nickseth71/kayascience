@@ -14,10 +14,16 @@
   body.blog .blog-content-wrap .view-share-wrap * {
     min-height: initial;
 }
+.highlights-section-wrap .page-width {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
   body.blog .blog-content-wrap .view-share-wrap {top:-5px}
 .home-collection-slider   .card__content .card__information .card-information .price{margin-top:.5rem}
 .home-collection-slider    .card__information {grid-row-start: 1;
-    padding: 1.3rem 1rem 0;}
+    padding: 1rem 1rem 0;}
+    .jdgm-widget *{line-height:.6!important}
+    .reel-plugin-video-wrapper{    width: 140px!important;}
  /* .home-collection-slider  .card-wrapper {height: auto}
   .home-collection-slider .card .card__content {
     display: flex;
@@ -1872,6 +1878,9 @@ body.cart .quantity__button {
 }
 
 @media (max-width: 749px) {
+  .product-card-wrapper{    padding: 10px 5px 5px 5px;}
+  .home-iwt__content-wrapp .icon-text-items{gap:15px}
+  .home-iwt__content-wrapp .block-content-wrap{margin:15px 0 0 0}
   button.close-overlay {
     padding: 0;
     background: transparent;
@@ -1912,8 +1921,8 @@ body.cart .quantity__button {
   .section-routine-kits.multicolumn  .multicolumn-card  .multicolumn-card__info .link p{font-size: 14px; line-height: 18px}
   .section-routine-kits.multicolumn  .multicolumn-card img{border-radius: 8px}
 .section-routine-kits.multicolumn  .multicolumn-card {padding:15px}
-  body.index .blog-featured-blog .title-wrapper--no-top-margin {padding-left: 0; padding-right: 0; }
- body.index .blog-featured-blog  .page-width  {padding-right: 0}
+  body.index .blog-featured-blog .title-wrapper--no-top-margin {padding-left: 0; padding-right: 0;margin-top: 0; }
+ body.index .blog-featured-blog  .page-width  {padding-right: 0; padding-top: 1px;}
  body.index .blog-featured-blog  .page-width  .grid--peek.slider .grid__item:first-of-type {margin-left: 0}
   .rich-text__wrapper.rich-text__wrapper--left.page-width {
   width:100%
@@ -2012,8 +2021,9 @@ body.cart .quantity__button {
     padding: 8px;
   }
   .collection .swiper-wrapper .price--on-sale .price-item--regular {
-    font-size: 1.6rem;
+    font-size: 1rem;
   }
+  .collection .swiper-wrapper  span.percent-count{font-size: 1rem;}
   .price__sale .visually-hidden + span {
     display: flex;
     align-items: center;
@@ -2691,16 +2701,16 @@ body.cart .quantity__button {
     margin-top: .5rem !important;
   }
   .card__content .quick-add product-form button.quick-add__submit {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     min-height: 32px;
   }
   .card__content .quick-add button.swym-add-to-wishlist-view-product {
     width: 20px;
   }
   .product-card-wrapper .card__heading.h5 {
-    font-size: calc(var(--font-heading-scale) * 1.4rem);
+    font-size: calc(var(--font-heading-scale) * 1.2rem);
   }
-
+  .card-information>.price{font-size: 1rem;}
   .shop-cat-right--main .shop_targ-item:nth-child(1) {
     top: 30%;
     left: 38%;

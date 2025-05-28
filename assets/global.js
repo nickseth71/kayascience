@@ -1332,7 +1332,7 @@ grabCursor: false,
 breakpoints: {
 1024: { slidesPerView: 5 },
 768: { slidesPerView: 3 },
-0: { slidesPerView: 2.5 },
+0: { slidesPerView: 2.5,spaceBetween: 12 },
 },
 });
 }
