@@ -1314,7 +1314,7 @@ let col_swiper;
 
 function initializeSwiper() {
 var slides = colswiperContainer.querySelectorAll('.swiper-slide');
-var slidesPerView = window.innerWidth < 768 ? 1.5 : (window.innerWidth < 1024 ? 3 : 5);
+var slidesPerView = window.innerWidth < 768 ? 2.5 : (window.innerWidth < 1024 ? 3 : 5);
 var enableLoop = slides.length > slidesPerView; 
 
 return new Swiper('.home-collection-slider', {
@@ -1332,7 +1332,7 @@ grabCursor: false,
 breakpoints: {
 1024: { slidesPerView: 5 },
 768: { slidesPerView: 3 },
-0: { slidesPerView: 1.5 },
+0: { slidesPerView: 2.5 },
 },
 });
 }
