@@ -71,246 +71,6 @@
   </div>
 </div>
 
-{% comment %} <script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Get values from URL
-  const params = new URLSearchParams(window.location.search);
-  let selectedSkinType = params.get("skinType") || "";
-  let selectedProductType = params.get("productType") || "";
-  let selectedConcern = params.get("concern") || "";
-
-  window.collectionsProductsMetafields = {
-    {% for collection in collections %}
-      "{{ collection.handle }}": [
-        {% for product in collection.products %}
-          {
-            id: "{{ product.id }}",
-            title: "{{ product.title | escape }}",
-            metafield: {{ product.metafields.custom.concern_filter.value | json }}
-          }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  };
-
-  const skinTypeSelect = document.querySelector(".js_col_label");
-  const productTypeSelect = document.querySelector(".js_col_list");
-  const concernSelect = document.getElementById("product-concern-select");
-  const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
-  const searchButton = document.querySelector('.js-search-products');
-  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
-  const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
-
-  function filterProductTypes(selectedGroup) {
-    selectedProductType = "";
-    productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
-
-    allProductOptionsCloned.forEach(li => {
-      if (li.dataset.group === selectedGroup) {
-        const newLi = li.cloneNode(true);
-        newLi.classList.remove('active');
-        productTypeSelect.appendChild(newLi);
-      }
-    });
-
-    const productHeading = productTypeSelect.previousElementSibling;
-    if (productHeading && productHeading.classList.contains('dropdown-heading')) {
-      productHeading.innerText = "Any Product";
-    }
-
-    concernSelect.innerHTML = '';
-    const anyLi = document.createElement('li');
-    anyLi.setAttribute("value", "");
-    concernSelect.appendChild(anyLi);
-
-    const concernHeading = concernSelect.previousElementSibling;
-    if (concernHeading && concernHeading.classList.contains('dropdown-heading')) {
-      concernHeading.innerText = "Any Concern";
-    }
-
-    selectedConcern = "";
-  }
-
-  dropdownHeadings.forEach(heading => {
-    heading.addEventListener('click', () => {
-      const dropdown = heading.nextElementSibling;
-      if (dropdown) {
-        const isActive = dropdown.classList.toggle('active');
-        dropdown.style.display = isActive ? "block" : "none";
-
-        let overlayEle = document.querySelector('.quiz-overlay');
-        if (isActive) {
-          if (!overlayEle) {
-            overlayEle = document.createElement('div');
-            overlayEle.className = 'quiz-overlay';
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'close-overlay';
-            closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto"><rect width="32" height="32" fill="black"></rect><path d="M20.3043 22L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10L15.9739 14.3306L11.6696 10L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22L15.9739 17.6958L20.3043 22Z" fill="white"></path></svg>`;
-            closeBtn.addEventListener('click', () => {
-              dropdown.classList.remove('active');
-              dropdown.style.display = 'none';
-              overlayEle.remove();
-            });
-            overlayEle.appendChild(closeBtn);
-            document.body.appendChild(overlayEle);
-          }
-        } else if (overlayEle) {
-          overlayEle.remove();
-        }
-      }
-    });
-  });
-
-  skinTypeSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI") {
-      selectedSkinType = e.target.getAttribute("data-value");
-      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
-      e.target.classList.add("active");
-
-      const heading = this.previousElementSibling;
-      if (heading) {
-        heading.innerText = e.target.innerText;
-        heading.nextElementSibling.style.display = 'none';
-        heading.nextElementSibling.classList.remove('active');
-      }
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
-
-      filterProductTypes(selectedSkinType);
-    }
-  });
-
-  productTypeSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI" && !e.target.disabled) {
-      selectedProductType = e.target.getAttribute("value");
-      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
-      e.target.classList.add("active");
-
-      const heading = this.previousElementSibling;
-      if (heading) {
-        heading.innerText = e.target.innerText;
-        heading.nextElementSibling.style.display = 'none';
-        heading.nextElementSibling.classList.remove('active');
-      }
-
-      const products = window.collectionsProductsMetafields[selectedProductType] || [];
-      const concernsSet = new Set();
-      products.forEach(prod => {
-        const meta = prod.metafield;
-        if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
-        else if (typeof meta === "string") concernsSet.add(meta.trim());
-        else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
-      });
-
-      concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
-      concernsSet.forEach(concern => {
-        const li = document.createElement("li");
-        li.setAttribute("value", concern);
-        li.textContent = concern;
-        concernSelect.appendChild(li);
-      });
-
-      const concernHeading = concernSelect.previousElementSibling;
-      if (concernHeading) concernHeading.innerText = "Any Concern";
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
-    }
-  });
-
-  concernSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI" && !e.target.disabled) {
-      selectedConcern = e.target.getAttribute("value");
-      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
-      e.target.classList.add("active");
-
-      const heading = this.previousElementSibling;
-      if (heading) {
-        heading.innerText = e.target.innerText;
-        heading.nextElementSibling.style.display = 'none';
-        heading.nextElementSibling.classList.remove('active');
-      }
-
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
-    }
-  });
-
-searchButton.addEventListener('click', () => {
-    console.log("Clicked!");
-  console.log("Skin:", selectedSkinType);
-  console.log("Product:", selectedProductType);
-  console.log("Concern:", selectedConcern);
-  const query = selectedProductType || selectedSkinType || '';
-  const concernFilter = selectedConcern && selectedConcern !== "Any Concern"
-    ? `&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`
-    : '';
-  const url = `https://kayascience.com/search?q=${encodeURIComponent(query)}&type=product&options%5Bprefix%5D=last${concernFilter}&view=quiz-products`;
-  window.location.href = url;
-});
-
-
-  // ----------- Auto-select from URL OR fallback to first values ------------
-  const skinLi = skinTypeSelect.querySelector(`li[data-value="${selectedSkinType}"]`) || skinTypeSelect.querySelector("li[data-value]");
-  if (skinLi) {
-    selectedSkinType = skinLi.getAttribute("data-value");
-    skinLi.classList.add("active");
-    skinTypeSelect.previousElementSibling.innerText = skinLi.innerText;
-    filterProductTypes(selectedSkinType);
-
-    setTimeout(() => {
-      const productLi = productTypeSelect.querySelector(`li[value="${selectedProductType}"]`) || productTypeSelect.querySelector("li[value]");
-      if (productLi) {
-        selectedProductType = productLi.getAttribute("value");
-        productLi.classList.add("active");
-        productTypeSelect.previousElementSibling.innerText = productLi.innerText;
-
-        const products = window.collectionsProductsMetafields[selectedProductType] || [];
-        const concernsSet = new Set();
-        products.forEach(prod => {
-          const meta = prod.metafield;
-          if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
-          else if (typeof meta === "string") concernsSet.add(meta.trim());
-          else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
-        });
-
-        concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
-        concernsSet.forEach(concern => {
-          const li = document.createElement("li");
-          li.setAttribute("value", concern);
-          li.textContent = concern;
-          concernSelect.appendChild(li);
-        });
-
-        setTimeout(() => {
-          const concernLi = concernSelect.querySelector(`li[value="${selectedConcern}"]`) || concernSelect.querySelector("li[value]");
-          if (concernLi) {
-            selectedConcern = concernLi.getAttribute("value");
-            concernLi.classList.add("active");
-            concernSelect.previousElementSibling.innerText = concernLi.innerText;
-          }
-        }, 500);
-      }
-    }, 550);
-  }
-
-  document.addEventListener('click', function (e) {
-    const isDropdownHeading = e.target.closest('.dropdown-heading');
-    const isDropdownList = e.target.closest('.type-data-content');
-    if (!isDropdownHeading && !isDropdownList) {
-      document.querySelectorAll('.type-data-content').forEach(el => {
-        el.classList.remove('active');
-        el.style.display = 'none';
-      });
-      const overlayEle = document.querySelector('.quiz-overlay');
-      if (overlayEle) overlayEle.remove();
-    }
-  });
-
-});
-</script> {% endcomment %}
 
 
  <script>
@@ -386,8 +146,8 @@ function getCookie(name) {
         const isActive = dropdown.classList.toggle('active');
         dropdown.style.display = isActive ? "block" : "none";
 
-        let overlayEle = document.querySelector('.quiz-overlay');
-        if (isActive) {
+        {% comment %} let overlayEle = document.querySelector('.quiz-overlay'); {% endcomment %}
+        {% comment %} if (isActive) {
           if (!overlayEle) {
             overlayEle = document.createElement('div');
             overlayEle.className = 'quiz-overlay';
@@ -404,7 +164,7 @@ function getCookie(name) {
           }
         } else if (overlayEle) {
           overlayEle.remove();
-        }
+        } {% endcomment %}
       }
     });
   });
@@ -542,6 +302,7 @@ function getCookie(name) {
   }
 
   document.addEventListener('click', function (e) {
+
     const isDropdownHeading = e.target.closest('.dropdown-heading');
     const isDropdownList = e.target.closest('.type-data-content');
     if (!isDropdownHeading && !isDropdownList) {
@@ -551,25 +312,27 @@ function getCookie(name) {
       });
       const overlayEle = document.querySelector('.quiz-overlay');
       if (overlayEle) overlayEle.remove();
+
+   setTimeout(() => {
+  var content = document.querySelector('#product-type-select');
+  var overlayButtons = document.querySelectorAll('button.close-overlay');
+  console.log("content<><>soumya", content);
+
+  if (content && overlayButtons.length > 0) {
+    var contentHeight = content.offsetHeight;
+    console.log("contentHeight<><>soumya", contentHeight);
+    overlayButtons.forEach(button => {
+      button.style.bottom = contentHeight + 'px';
+    });
+  }
+}, 10000);
+
     }
-  });
+  }); 
 
 
 });
-{% comment %} for mobile overlay height set {% endcomment %}
- document.addEventListener("DOMContentLoaded", function() {
-    var content = document.querySelector('.type-data-content.active');
-    var overlaybuttons = document.querySelector('button.close-overlay');
 
-  
-        var contentHeight = content.offsetHeight;
-
-        for (var i = 0; i < overlaybuttons.length; i++) {
-            overlaybuttons[i].style.position = 'absolute'; // Or 'fixed', depending on your layout
-            overlaybuttons[i].style.bottom = contentHeight + 'px';
-        }
-    
-});
 
 
 
