@@ -147,6 +147,22 @@ document.addEventListener('DOMContentLoaded', () => {
       // Toggle body class based on dropdown state
       if (isActive) {
         document.body.classList.add('dropdown-open');
+        // Get the active dropdown element
+        const activeDropdown = document.querySelector('.type-data-content.active');
+
+        if (activeDropdown) {
+          // Get its height in pixels
+          const height = activeDropdown.offsetHeight;
+
+          // Select all close-overlay elements
+          const closeOverlays = document.querySelectorAll('.close-overlay');
+
+          // Set bottom style to height + 'px'
+          closeOverlays.forEach(el => {
+            el.style.bottom = height + 'px';
+          });
+        }
+
       } else {
         document.body.classList.remove('dropdown-open');
       }
@@ -166,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
+        document.body.classList.remove('dropdown-open');
       }
 
       filterProductTypes(selectedSkinType);
@@ -183,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
+        document.body.classList.remove('dropdown-open');
       }
 
       const products = window.collectionsProductsMetafields[selectedProductType] || [];
@@ -218,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
+        document.body.classList.remove('dropdown-open');
       }
     }
   });
@@ -286,6 +305,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+  document.querySelectorAll('.close-overlay').forEach(closeBtn => {
+  closeBtn.addEventListener('click', () => {
+    document.body.classList.remove('dropdown-open');
+
+    // Optionally close all dropdowns too
+    document.querySelectorAll('.type-data-content').forEach(el => {
+      el.classList.remove('active');
+      el.style.display = 'none';
+    });
+  });
+});
+
+
+
 });
 </script>
 
