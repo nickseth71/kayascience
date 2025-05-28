@@ -31,7 +31,7 @@
           <div class="dropdown-heading">{{ section.settings.heading2 }}</div>
           {% endif %}
           <ul id="product-type-select" class="js_col_list product-type-data type-data-content" style="display:none;">
-            <li disabled selected>Any Product</li>
+            {% comment %} <li disabled selected>Any Product</li> {% endcomment %}
             {% for i in (1..5) %}
               {% capture col_listing %}col_list{{ i }}{% endcapture %}
               {% capture label_key %}col_trigger{{ i }}{% endcapture %}
@@ -49,13 +49,13 @@
 
       <!-- Concern Section -->
       <div class="skin-concern__data-wrapper main-data-wrapper">
-        <span>that targets any concern</span>
+        <span>that targets</span>
         <div class="concern-type__content-wrapp selected-data-content">
           {% if section.settings.heading3 != blank %}
           <div class="dropdown-heading">{{ section.settings.heading3 }}</div>
           {% endif %}
           <ul id="product-concern-select" class="js_concern_list concern-type-data type-data-content" style="display:none;">
-            <li disabled selected>Any Concern</li>
+            {% comment %} <li disabled selected>Any Concern</li> {% endcomment %}
           </ul>
         </div>
       </div>
@@ -63,7 +63,7 @@
       <!-- Search Button -->
       {% if section.settings.search_btn_label != blank %}
       <div class="search_btn_label_wrapp">
-        <div class="button js-search-products">{{ section.settings.search_btn_label }}</div>
+        <div class="button js-search-products ">{{ section.settings.search_btn_label }}</div>
       </div>
       {% endif %}
 
@@ -71,286 +71,113 @@
   </div>
 </div>
 
+{% comment %} <script>
+document.addEventListener('DOMContentLoaded', () => {
 
-{% comment %} 
-<script>
-window.collectionsProductsMetafields = {
-  {% for collection in collections %}
-    "{{ collection.handle }}": [
-      {% for product in collection.products %}
-        {
-          id: "{{ product.id }}",
-          title: "{{ product.title | escape }}",
-          metafield: {{ product.metafields.custom.concern_filter.value | json }}
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-};
+  // Get values from URL
+  const params = new URLSearchParams(window.location.search);
+  let selectedSkinType = params.get("skinType") || "";
+  let selectedProductType = params.get("productType") || "";
+  let selectedConcern = params.get("concern") || "";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const skinTypeSelect = document.querySelector(".js_col_label");
-  const productTypeSelect = document.querySelector(".js_col_list");
-  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
-  const concernSelect = document.getElementById("product-concern-select");
-  const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
-  let selectedProductType = "";
-  let selectedConcern = "";
-
-  // Clone and store product options
-  const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
-
-  function filterProductTypes(selectedGroup) {
-    productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
-    allProductOptionsCloned.forEach(li => {
-      if (li.dataset.group === selectedGroup) {
-        productTypeSelect.appendChild(li.cloneNode(true));
-      }
-    });
-
-    // Reset concerns
-    concernSelect.innerHTML = '<li disabled selected>Any Concern</li>';
-  }
-
-  // Dropdown toggle
-  dropdownHeadings.forEach(function(heading) {
-    heading.addEventListener('click', function() {
-      const dropdown = heading.nextElementSibling;
-      if (dropdown) {
-        dropdown.classList.toggle('active');
-        dropdown.style.display = dropdown.classList.contains('active') ? "block" : "none";
-      }
-    });
-  });
-
-  // Skin type selection
-skinTypeSelect.addEventListener("click", function (e) {
-   selectedSkinType = e.target.getAttribute("value");
-  if (e.target.tagName === "LI") {
-    const selectedGroup = e.target.getAttribute("data-value");
-    filterProductTypes(selectedGroup);
-
-    const allItems = this.querySelectorAll("li");
-    allItems.forEach(li => li.classList.remove("active"));
-
-    e.target.classList.add("active");
-
-    const targetHeading = this.previousElementSibling;
-    if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
-      targetHeading.innerText = e.target.innerText;
-      const skinSelectedType = e.target.innerText;
-      document.cookie = `skinType=${encodeURIComponent(skinSelectedType)}; path=/; max-age=86400`;
-      const dropdownList = targetHeading.nextElementSibling;
-      if (dropdownList) {
-        dropdownList.style.display = 'none';
-        dropdownList.classList.remove('active');
-      }
-    }
-  }
-});
-
-
-  // Product type selection
-  productTypeSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI" && !e.target.disabled) {
-      selectedProductType = e.target.getAttribute("value");
-      document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
-      document.querySelector('.js-search-products').setAttribute("data-product-type", selectedProductType);
-      const allItems = this.querySelectorAll("li");
-      allItems.forEach(li => li.classList.remove("active"));
-
-      e.target.classList.add("active");
-
-      const products = window.collectionsProductsMetafields[selectedProductType] || [];
-      const concernsSet = new Set();
-      const targetHeading = this.previousElementSibling;
-      
-      const dropdownList = targetHeading.nextElementSibling;
-       if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
-      targetHeading.innerText = e.target.innerText;
-
-      const dropdownList = targetHeading.nextElementSibling;
-      if (dropdownList) {
-        dropdownList.style.display = 'none';
-        dropdownList.classList.remove('active');
-      }
-    }
-      products.forEach(prod => {
-        const meta = prod.metafield;
-        if (Array.isArray(meta)) {
-          meta.forEach(val => concernsSet.add(val.trim()));
-        } else if (typeof meta === "string") {
-          concernsSet.add(meta.trim());
-        } else if (typeof meta === "object" && meta !== null) {
-          Object.values(meta).forEach(val => concernsSet.add(val.trim()));
-        }
-      });
-
-      concernSelect.innerHTML = concernsSet.size > 0
-        ? '<li disabled selected>Any Concern</li>'
-        : '<li disabled selected>No concerns available</li>';
-
-      concernsSet.forEach(concern => {
-        const li = document.createElement("li");
-        li.setAttribute("value", concern);
-        li.textContent = concern;
-        concernSelect.appendChild(li);
-      });
-    }
-  });
-
-  // Concern selection
-  concernSelect.addEventListener("click", function (e) {
-    if (e.target.tagName === "LI" && !e.target.disabled) {
-      const allItems = this.querySelectorAll("li");
-      allItems.forEach(li => li.classList.remove("active"));
-
-      e.target.classList.add("active");
-
-      const targetHeading = this.previousElementSibling;
-      
-      const dropdownList = targetHeading.nextElementSibling;
-       if (targetHeading && targetHeading.classList.contains('dropdown-heading')) {
-      targetHeading.innerText = e.target.innerText;
-
-      const dropdownList = targetHeading.nextElementSibling;
-      if (dropdownList) {
-        dropdownList.style.display = 'none';
-        dropdownList.classList.remove('active');
-      }
-    }
-      selectedConcern = e.target.getAttribute("value");
-      document.querySelector('.js-search-products').setAttribute("data-concern-type", selectedConcern);
-      document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
-    }
-  });
-
-  // Search button click
-  document.querySelector('.js-search-products').addEventListener("click", function () {
-    if (!selectedProductType || !selectedConcern) return;
-
-  // Store values in cookies (expire in 1 day)
-  
-  document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
-  document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
-
-    const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
-
-    window.location.href = url;
-  }); 
- 
-  //  Auto-select first skin type on load
-  const firstSkinType = skinTypeSelect.querySelector("li[data-value]");
-  if (firstSkinType) {
-    const selectedGroup = firstSkinType.getAttribute("data-value");
-    filterProductTypes(selectedGroup);
-
-  }
-
-});
-</script> {% endcomment %}
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
   window.collectionsProductsMetafields = {
-  {% for collection in collections %}
-    "{{ collection.handle }}": [
-      {% for product in collection.products %}
-        {
-          id: "{{ product.id }}",
-          title: "{{ product.title | escape }}",
-          metafield: {{ product.metafields.custom.concern_filter.value | json }}
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-};
-  let selectedSkinType = "";
-  let selectedProductType = "";
-  let selectedConcern = "";
+    {% for collection in collections %}
+      "{{ collection.handle }}": [
+        {% for product in collection.products %}
+          {
+            id: "{{ product.id }}",
+            title: "{{ product.title | escape }}",
+            metafield: {{ product.metafields.custom.concern_filter.value | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
 
   const skinTypeSelect = document.querySelector(".js_col_label");
   const productTypeSelect = document.querySelector(".js_col_list");
-  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
   const concernSelect = document.getElementById("product-concern-select");
   const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
   const searchButton = document.querySelector('.js-search-products');
-
+  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
   const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
-  }
-
   function filterProductTypes(selectedGroup) {
+    selectedProductType = "";
     productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
+
     allProductOptionsCloned.forEach(li => {
       if (li.dataset.group === selectedGroup) {
-        productTypeSelect.appendChild(li.cloneNode(true));
+        const newLi = li.cloneNode(true);
+        newLi.classList.remove('active');
+        productTypeSelect.appendChild(newLi);
       }
     });
-    concernSelect.innerHTML = '<li disabled selected>Any Concern</li>';
+
+    const productHeading = productTypeSelect.previousElementSibling;
+    if (productHeading && productHeading.classList.contains('dropdown-heading')) {
+      productHeading.innerText = "Any Product";
+    }
+
+    concernSelect.innerHTML = '';
+    const anyLi = document.createElement('li');
+    anyLi.setAttribute("value", "");
+    concernSelect.appendChild(anyLi);
+
+    const concernHeading = concernSelect.previousElementSibling;
+    if (concernHeading && concernHeading.classList.contains('dropdown-heading')) {
+      concernHeading.innerText = "Any Concern";
+    }
+
+    selectedConcern = "";
   }
 
-dropdownHeadings.forEach(heading => {
-  heading.addEventListener('click', () => {
-    const dropdown = heading.nextElementSibling;
+  dropdownHeadings.forEach(heading => {
+    heading.addEventListener('click', () => {
+      const dropdown = heading.nextElementSibling;
+      if (dropdown) {
+        const isActive = dropdown.classList.toggle('active');
+        dropdown.style.display = isActive ? "block" : "none";
 
-    if (dropdown) {
-      const isActive = dropdown.classList.toggle('active');
-      dropdown.style.display = isActive ? "block" : "none";
-
-      // Check if overlay already exists
-      let overlayEle = document.querySelector('.quiz-overlay');
-
-      if (isActive) {
-        if (!overlayEle) {
-          // Create overlay
-          overlayEle = document.createElement('div');
-          overlayEle.className = 'quiz-overlay';
-         
-   
-          const closeBtn = document.createElement('button');
-          closeBtn.className = 'close-overlay';
-          closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto" data-v-0e900098=""><rect y="0.00012207" width="32" height="32" fill="black"></rect><path d="M20.3043 22.0001L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10.0001L15.9739 14.3306L11.6696 10.0001L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22.0001L15.9739 17.6958L20.3043 22.0001Z" fill="white"></path></svg>`;
-
-          // Add click handler to close button
-          closeBtn.addEventListener('click', () => {
-            dropdown.classList.remove('active');
-            dropdown.style.display = 'none';
-            overlayEle.remove();
-          });
-
-          overlayEle.appendChild(closeBtn);
-          document.body.appendChild(overlayEle);
-        }
-      } else {
-        if (overlayEle) {
+        let overlayEle = document.querySelector('.quiz-overlay');
+        if (isActive) {
+          if (!overlayEle) {
+            overlayEle = document.createElement('div');
+            overlayEle.className = 'quiz-overlay';
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-overlay';
+            closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto"><rect width="32" height="32" fill="black"></rect><path d="M20.3043 22L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10L15.9739 14.3306L11.6696 10L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22L15.9739 17.6958L20.3043 22Z" fill="white"></path></svg>`;
+            closeBtn.addEventListener('click', () => {
+              dropdown.classList.remove('active');
+              dropdown.style.display = 'none';
+              overlayEle.remove();
+            });
+            overlayEle.appendChild(closeBtn);
+            document.body.appendChild(overlayEle);
+          }
+        } else if (overlayEle) {
           overlayEle.remove();
         }
       }
-    }
+    });
   });
-});
 
   skinTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI") {
       selectedSkinType = e.target.getAttribute("data-value");
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
+
       const heading = this.previousElementSibling;
-      if (heading && heading.classList.contains('dropdown-heading')) {
+      if (heading) {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
 
-        const overlayEle = document.querySelector('.quiz-overlay');
-        if (overlayEle) {
-          overlayEle.remove();
-        }
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+
       filterProductTypes(selectedSkinType);
     }
   });
@@ -360,8 +187,9 @@ dropdownHeadings.forEach(heading => {
       selectedProductType = e.target.getAttribute("value");
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
+
       const heading = this.previousElementSibling;
-      if (heading && heading.classList.contains('dropdown-heading')) {
+      if (heading) {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
@@ -376,18 +204,20 @@ dropdownHeadings.forEach(heading => {
         else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
       });
 
-      concernSelect.innerHTML = concernsSet.size > 0 ? '<li disabled selected>Any Concern</li>' : '<li disabled selected>No concerns available</li>';
+      concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
       concernsSet.forEach(concern => {
         const li = document.createElement("li");
         li.setAttribute("value", concern);
         li.textContent = concern;
         concernSelect.appendChild(li);
       });
+
+      const concernHeading = concernSelect.previousElementSibling;
+      if (concernHeading) concernHeading.innerText = "Any Concern";
+
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
     }
-    const overlayEle = document.querySelector('.quiz-overlay');
-        if (overlayEle) {
-          overlayEle.remove();
-        }
   });
 
   concernSelect.addEventListener("click", function (e) {
@@ -395,62 +225,360 @@ dropdownHeadings.forEach(heading => {
       selectedConcern = e.target.getAttribute("value");
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
+
       const heading = this.previousElementSibling;
-      if (heading && heading.classList.contains('dropdown-heading')) {
+      if (heading) {
         heading.innerText = e.target.innerText;
         heading.nextElementSibling.style.display = 'none';
         heading.nextElementSibling.classList.remove('active');
       }
 
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
     }
-    const overlayEle = document.querySelector('.quiz-overlay');
-        if (overlayEle) {
-          overlayEle.remove();
-        }
   });
 
-  searchButton.addEventListener("click", function () {
-    if (!selectedSkinType || !selectedProductType || !selectedConcern) {
-      alert("Please select skin type, product type, and concern.");
-      return;
+searchButton.addEventListener('click', () => {
+    console.log("Clicked!");
+  console.log("Skin:", selectedSkinType);
+  console.log("Product:", selectedProductType);
+  console.log("Concern:", selectedConcern);
+  const query = selectedProductType || selectedSkinType || '';
+  const concernFilter = selectedConcern && selectedConcern !== "Any Concern"
+    ? `&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}`
+    : '';
+  const url = `https://kayascience.com/search?q=${encodeURIComponent(query)}&type=product&options%5Bprefix%5D=last${concernFilter}&view=quiz-products`;
+  window.location.href = url;
+});
+
+
+  // ----------- Auto-select from URL OR fallback to first values ------------
+  const skinLi = skinTypeSelect.querySelector(`li[data-value="${selectedSkinType}"]`) || skinTypeSelect.querySelector("li[data-value]");
+  if (skinLi) {
+    selectedSkinType = skinLi.getAttribute("data-value");
+    skinLi.classList.add("active");
+    skinTypeSelect.previousElementSibling.innerText = skinLi.innerText;
+    filterProductTypes(selectedSkinType);
+
+    setTimeout(() => {
+      const productLi = productTypeSelect.querySelector(`li[value="${selectedProductType}"]`) || productTypeSelect.querySelector("li[value]");
+      if (productLi) {
+        selectedProductType = productLi.getAttribute("value");
+        productLi.classList.add("active");
+        productTypeSelect.previousElementSibling.innerText = productLi.innerText;
+
+        const products = window.collectionsProductsMetafields[selectedProductType] || [];
+        const concernsSet = new Set();
+        products.forEach(prod => {
+          const meta = prod.metafield;
+          if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
+          else if (typeof meta === "string") concernsSet.add(meta.trim());
+          else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
+        });
+
+        concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
+        concernsSet.forEach(concern => {
+          const li = document.createElement("li");
+          li.setAttribute("value", concern);
+          li.textContent = concern;
+          concernSelect.appendChild(li);
+        });
+
+        setTimeout(() => {
+          const concernLi = concernSelect.querySelector(`li[value="${selectedConcern}"]`) || concernSelect.querySelector("li[value]");
+          if (concernLi) {
+            selectedConcern = concernLi.getAttribute("value");
+            concernLi.classList.add("active");
+            concernSelect.previousElementSibling.innerText = concernLi.innerText;
+          }
+        }, 500);
+      }
+    }, 550);
   }
 
+  document.addEventListener('click', function (e) {
+    const isDropdownHeading = e.target.closest('.dropdown-heading');
+    const isDropdownList = e.target.closest('.type-data-content');
+    if (!isDropdownHeading && !isDropdownList) {
+      document.querySelectorAll('.type-data-content').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none';
+      });
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+    }
+  });
+
+});
+</script> {% endcomment %}
+
+
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+
+function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
+
+  let selectedSkinType = getCookie("skinType") || "";
+  let selectedProductType = getCookie("productType") || "";
+  let selectedConcern = getCookie("concern") || "";
+
+  window.collectionsProductsMetafields = {
+    {% for collection in collections %}
+      "{{ collection.handle }}": [
+        {% for product in collection.products %}
+          {
+            id: "{{ product.id }}",
+            title: "{{ product.title | escape }}",
+            metafield: {{ product.metafields.custom.concern_filter.value | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+
+  const skinTypeSelect = document.querySelector(".js_col_label");
+  const productTypeSelect = document.querySelector(".js_col_list");
+  const concernSelect = document.getElementById("product-concern-select");
+  const dropdownHeadings = document.querySelectorAll('.dropdown-heading');
+  const searchButton = document.querySelector('.js-search-products');
+  const allProductOptions = Array.from(document.querySelectorAll("li[data-group]"));
+  const allProductOptionsCloned = allProductOptions.map(li => li.cloneNode(true));
+
+ 
+  function filterProductTypes(selectedGroup) {
+    selectedProductType = "";
+    productTypeSelect.innerHTML = '<li disabled selected>Any Product</li>';
+
+    allProductOptionsCloned.forEach(li => {
+      if (li.dataset.group === selectedGroup) {
+        const newLi = li.cloneNode(true);
+        newLi.classList.remove('active');
+        productTypeSelect.appendChild(newLi);
+      }
+    });
+
+    const productHeading = productTypeSelect.previousElementSibling;
+    if (productHeading && productHeading.classList.contains('dropdown-heading')) {
+      productHeading.innerText = "Any Product";
+    }
+
+    concernSelect.innerHTML = '<li selected>Any Concern</li>';
+     concernSelect.innerHTML = '';
+      const anyLi = document.createElement('li');
+      {% comment %} anyLi.textContent = "Any Concern"; {% endcomment %}
+      anyLi.setAttribute("value", "");
+      concernSelect.appendChild(anyLi);
+    const concernHeading = concernSelect.previousElementSibling;
+    if (concernHeading && concernHeading.classList.contains('dropdown-heading')) {
+      concernHeading.innerText = "Any Concern";
+    }
+
+    selectedConcern = "";
+  }
+
+  dropdownHeadings.forEach(heading => {
+    heading.addEventListener('click', () => {
+      const dropdown = heading.nextElementSibling;
+      if (dropdown) {
+        const isActive = dropdown.classList.toggle('active');
+        dropdown.style.display = isActive ? "block" : "none";
+
+        let overlayEle = document.querySelector('.quiz-overlay');
+        if (isActive) {
+          if (!overlayEle) {
+            overlayEle = document.createElement('div');
+            overlayEle.className = 'quiz-overlay';
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-overlay';
+            closeBtn.innerHTML = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="fill-current h-auto"><rect width="32" height="32" fill="black"></rect><path d="M20.3043 22L21.9739 20.3306L17.6696 16.0262L22 11.6958L20.3043 10L15.9739 14.3306L11.6696 10L10 11.6958L14.3043 16.0262L10 20.3306L11.6957 22L15.9739 17.6958L20.3043 22Z" fill="white"></path></svg>`;
+            closeBtn.addEventListener('click', () => {
+              dropdown.classList.remove('active');
+              dropdown.style.display = 'none';
+              overlayEle.remove();
+            });
+            overlayEle.appendChild(closeBtn);
+            document.body.appendChild(overlayEle);
+          }
+        } else if (overlayEle) {
+          overlayEle.remove();
+        }
+      }
+    });
+  });
+
+  skinTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI") {
+      selectedSkinType = e.target.getAttribute("data-value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+
+      const heading = this.previousElementSibling;
+      if (heading) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+
+      filterProductTypes(selectedSkinType);
+    }
+  });
+
+  productTypeSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedProductType = e.target.getAttribute("value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+
+      const heading = this.previousElementSibling;
+      if (heading) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+
+      const products = window.collectionsProductsMetafields[selectedProductType] || [];
+      const concernsSet = new Set();
+      products.forEach(prod => {
+        const meta = prod.metafield;
+        if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
+        else if (typeof meta === "string") concernsSet.add(meta.trim());
+        else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
+      });
+
+      concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
+      concernsSet.forEach(concern => {
+        const li = document.createElement("li");
+        li.setAttribute("value", concern);
+        li.textContent = concern;
+        concernSelect.appendChild(li);
+      });
+
+      const concernHeading = concernSelect.previousElementSibling;
+      if (concernHeading) concernHeading.innerText = "Any Concern";
+
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+    }
+  });
+
+  concernSelect.addEventListener("click", function (e) {
+    if (e.target.tagName === "LI" && !e.target.disabled) {
+      selectedConcern = e.target.getAttribute("value");
+      this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+      e.target.classList.add("active");
+
+      const heading = this.previousElementSibling;
+      if (heading) {
+        heading.innerText = e.target.innerText;
+        heading.nextElementSibling.style.display = 'none';
+        heading.nextElementSibling.classList.remove('active');
+      }
+
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+    }
+  });
+
+  searchButton.addEventListener('click', () => {
     document.cookie = `skinType=${encodeURIComponent(selectedSkinType)}; path=/; max-age=86400`;
     document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
     document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
 
-    const url = `https://kayascience.com/search?q=${encodeURIComponent(selectedProductType)}&options%5Bprefix%5D=last&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}&view=quiz-products`;
+    const query = selectedProductType || selectedSkinType || '';
+    const concernFilter = selectedConcern && selectedConcern !== "Any Concern" ? `&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}` : '';
+    const url = `https://kayascience.com/search?q=${encodeURIComponent(query)}&type=product&options%5Bprefix%5D=last${concernFilter}&view=quiz-products`;
+
     window.location.href = url;
   });
 
-  const firstSkinType = skinTypeSelect.querySelector("li[data-value]");
-  if (firstSkinType) {
-    selectedSkinType = firstSkinType.getAttribute("data-value");
-    firstSkinType.classList.add("active");
+
+    // Auto-select cookie values
+  const skinLi = skinTypeSelect.querySelector(`li[data-value="${selectedSkinType}"]`);
+  if (skinLi) {
+    skinLi.classList.add("active");
+    skinTypeSelect.previousElementSibling.innerText = skinLi.innerText;
     filterProductTypes(selectedSkinType);
+
+    setTimeout(() => {
+      const productLi = productTypeSelect.querySelector(`li[value="${selectedProductType}"]`);
+      if (productLi) {
+        productLi.classList.add("active");
+        productTypeSelect.previousElementSibling.innerText = productLi.innerText;
+
+        // Populate concern list based on selectedProductType
+        const products = window.collectionsProductsMetafields[selectedProductType] || [];
+        const concernsSet = new Set();
+        products.forEach(prod => {
+          const meta = prod.metafield;
+          if (Array.isArray(meta)) meta.forEach(val => concernsSet.add(val.trim()));
+          else if (typeof meta === "string") concernsSet.add(meta.trim());
+          else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
+        });
+
+        concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
+        concernsSet.forEach(concern => {
+          const li = document.createElement("li");
+          li.setAttribute("value", concern);
+          li.textContent = concern;
+          concernSelect.appendChild(li);
+        });
+
+        // Set concern from cookie
+        setTimeout(() => {
+          const concernLi = concernSelect.querySelector(`li[value="${selectedConcern}"]`);
+          if (concernLi) {
+            concernLi.classList.add("active");
+            concernSelect.previousElementSibling.innerText = concernLi.innerText;
+          }
+        }, 500);
+      }
+    }, 550);
   }
+
+  document.addEventListener('click', function (e) {
+    const isDropdownHeading = e.target.closest('.dropdown-heading');
+    const isDropdownList = e.target.closest('.type-data-content');
+    if (!isDropdownHeading && !isDropdownList) {
+      document.querySelectorAll('.type-data-content').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none';
+      });
+      const overlayEle = document.querySelector('.quiz-overlay');
+      if (overlayEle) overlayEle.remove();
+    }
+  });
+
+
+});
+{% comment %} for mobile overlay height set {% endcomment %}
+ document.addEventListener("DOMContentLoaded", function() {
+    var content = document.querySelector('.type-data-content.active');
+    var overlaybuttons = document.querySelector('button.close-overlay');
+
+  
+        var contentHeight = content.offsetHeight;
+
+        for (var i = 0; i < overlaybuttons.length; i++) {
+            overlaybuttons[i].style.position = 'absolute'; // Or 'fixed', depending on your layout
+            overlaybuttons[i].style.bottom = contentHeight + 'px';
+        }
+    
 });
 
 
 
 
-{% comment %} function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
-}
-
-window.addEventListener("DOMContentLoaded", function () {
-  const skinType = getCookie("skinType");
-  const productType = getCookie("productType");
-  const concern = getCookie("concern");
-
-  if (skinType) document.querySelector("#skinTypeDropdown").value = skinType;
-  if (productType) document.querySelector("#productTypeDropdown").value = productType;
-  if (concern) document.querySelector("#concernDropdown").value = concern;
-}); {% endcomment %}
-
 </script>
+ 
+
+
+
  
 
 
