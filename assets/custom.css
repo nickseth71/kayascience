@@ -1539,6 +1539,7 @@ facet-remove a .active-facets__button-inner {
   font-size: 20px !important;
 }
 @media (min-width: 750px) {
+  .quiz-overlay {display: none!important;}
   .selected-data-content ul.type-data-content {
      padding: 3px 17px 6px 6px; right: 5px;
      background: #fff url(/cdn/shop/files/quiz-arrow-up.svg?v=1748345055) no-repeat calc(100% - 3px) 10px;
@@ -1896,8 +1897,7 @@ body.cart .quantity__button {
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, .7);
-    display: block !important;
-    z-index: 990;
+        z-index: 990;display: none;
 }
 .selected-data-content ul.type-data-content li {
     text-align: center;
@@ -3694,6 +3694,7 @@ li[data-address] .white-block p {
   padding: 0;
 }
 @media (min-width: 750px) {
+  
   .section-routine-kits.multicolumn  .multicolumn-card img{border-radius: 16px}
   .product__info-wrapper .price--on-sale .price__sale {
     gap: 10px;
