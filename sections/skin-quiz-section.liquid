@@ -43,20 +43,22 @@
                 {% endif %}
               {% endfor %}
             {% endfor %} {% endcomment %}
-              {% for i in (1..5) %}
+             {% for i in (1..5) %}
                 {% capture col_listing %}col_list{{ i }}{% endcapture %}
                 {% capture label_key %}col_trigger{{ i }}{% endcapture %}
                 {% assign group_label = section.settings[label_key] | handle %}
 
-                {% for collection_handle in section.settings[col_listing] %}
-                  {% assign collection = collections[collection_handle] %}
-                  {% if collection.metafields.custom.skin_quiz_text %}
-                    <li value="{{ collection.handle }}" data-group="{{ group_label }}">
-                      {{ collection.metafields.custom.skin_quiz_text.value }}
+                {% for collection in section.settings[col_listing] %}
+                  {% assign coll_obj = collections[collection.handle] %}
+                  {% if coll_obj %}
+                    {% assign quiz_text = coll_obj.metafields.custom.skin_quiz_text.value %}
+                    <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">
+                      {{ quiz_text }}
                     </li>
                   {% endif %}
                 {% endfor %}
               {% endfor %}
+
           </ul>
         </div>
       </div>
