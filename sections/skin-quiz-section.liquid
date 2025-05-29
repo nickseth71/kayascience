@@ -32,7 +32,7 @@
           {% endif %}
           <ul id="product-type-select" class="js_col_list product-type-data type-data-content" style="display:none;">
             {% comment %} <li disabled selected>Any Product</li> {% endcomment %}
-            {% for i in (1..5) %}
+            {% comment %} {% for i in (1..5) %}
               {% capture col_listing %}col_list{{ i }}{% endcapture %}
               {% capture label_key %}col_trigger{{ i }}{% endcapture %}
               {% assign group_label = section.settings[label_key] | handle %}
@@ -42,7 +42,21 @@
                   <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">{{ coll_obj.title }}</li>
                 {% endif %}
               {% endfor %}
-            {% endfor %}
+            {% endfor %} {% endcomment %}
+              {% for i in (1..5) %}
+                {% capture col_listing %}col_list{{ i }}{% endcapture %}
+                {% capture label_key %}col_trigger{{ i }}{% endcapture %}
+                {% assign group_label = section.settings[label_key] | handle %}
+
+                {% for collection_handle in section.settings[col_listing] %}
+                  {% assign collection = collections[collection_handle] %}
+                  {% if collection.metafields.custom.skin_quiz_text %}
+                    <li value="{{ collection.handle }}" data-group="{{ group_label }}">
+                      {{ collection.metafields.custom.skin_quiz_text.value }}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
           </ul>
         </div>
       </div>
@@ -212,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (typeof meta === "object" && meta !== null) Object.values(meta).forEach(val => concernsSet.add(val.trim()));
       });
 
-      concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>No concerns available</li>';
+      concernSelect.innerHTML = concernsSet.size > 0 ? '<li selected>Any Concern</li>' : '<li selected>Any Concern</li>';
       concernsSet.forEach(concern => {
         const li = document.createElement("li");
         li.setAttribute("value", concern);
