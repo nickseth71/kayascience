@@ -3805,7 +3805,7 @@ a.button.btn_view-more:after {
   justify-content: center;
 }
 .header__menu-item .icon-caret {
-  transform: rotate(270deg);
+  transform: rotate(270deg);top:auto
 }
 details[open] > .header__menu-item .icon-caret {
   transform: rotate(86deg) !important;
