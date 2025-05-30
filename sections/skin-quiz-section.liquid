@@ -16,7 +16,7 @@
               {% capture label_key %}col_trigger{{ i }}{% endcapture %}
               {% assign group_label = section.settings[label_key] | handle %}
               {% if section.settings[col_label] != blank %}
-                <li data-value="{{ group_label }}">{{ section.settings[col_label] }}</li>
+                <li data-value="{{ group_label }}" data-skin="{{ section.settings[col_label] }}">{{ section.settings[col_label] }}</li>
               {% endif %}
             {% endfor %}
           </ul>
@@ -52,7 +52,7 @@
                   {% assign coll_obj = collections[collection.handle] %}
                   {% if coll_obj %}
                     {% assign quiz_text = coll_obj.metafields.custom.skin_quiz_text.value %}
-                    <li value="{{ coll_obj.handle }}" data-group="{{ group_label }}">
+                    <li value="{{ coll_obj.handle }}" data-value="{{ quiz_text }}" data-group="{{ group_label }}">
                       {{ quiz_text }}
                     </li>
                   {% endif %}
@@ -90,15 +90,30 @@
 
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  function getCookie(name) {
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    return match ? decodeURIComponent(match[2]) : null;
+    function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
 
-  let selectedSkinType = getCookie("skinType") || "";
-  let selectedProductType = getCookie("productType") || "";
-  let selectedConcern = getCookie("concern") || "";
+{% comment %} const skinTypeElement = document.querySelector('.skin-type__content-wrapp .dropdown-heading');
+const skinTypeCookie = skinTypeElement ? skinTypeElement.textContent.trim() : '';
+
+const productTypeElement = document.querySelector('.product-type__content-wrapp .dropdown-heading');
+const productTypeCookie = productTypeElement ? productTypeElement.textContent.trim() : '';
+
+const concernTypeElement = document.querySelector('.concern-type__content-wrapp .dropdown-heading');
+const concernTypeCookie = concernTypeElement ? concernTypeElement.textContent.trim() : '';
+
+
+if (productTypeCookie) setCookie('product_type', productTypeCookie, 1);
+if (concernTypeCookie) setCookie('concern_type', concernTypeCookie, 1); {% endcomment %}
+
+document.addEventListener('DOMContentLoaded', () => {
 
   window.collectionsProductsMetafields = {
     {% for collection in collections %}
@@ -190,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
   skinTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI") {
       selectedSkinType = e.target.getAttribute("data-value");
+      selectedSkin = e.target.getAttribute("data-skin");
+      setCookie('skin_type', selectedSkin, 1);
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
 
@@ -208,6 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
   productTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedProductType = e.target.getAttribute("value");
+      productType = e.target.getAttribute("data-value");
+      setCookie('product_type', productType, 1);
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
 
@@ -244,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   concernSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedConcern = e.target.getAttribute("value");
+      setCookie('concern_type', selectedConcern, 1);
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
 
@@ -258,9 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   searchButton.addEventListener('click', () => {
-    document.cookie = `skinType=${encodeURIComponent(selectedSkinType)}; path=/; max-age=86400`;
-    document.cookie = `productType=${encodeURIComponent(selectedProductType)}; path=/; max-age=86400`;
-    document.cookie = `concern=${encodeURIComponent(selectedConcern)}; path=/; max-age=86400`;
+  
 
     const query = selectedProductType || selectedSkinType || '';
     const concernFilter = selectedConcern && selectedConcern !== "Any Concern" ? `&filter.p.m.custom.concern_filter=${encodeURIComponent(selectedConcern)}` : '';

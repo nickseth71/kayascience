@@ -5553,17 +5553,6 @@ button.copy-btn {
 body.blog .blog-content-wrap .card__information {
     padding-top: .7rem;
 }
-/*--------all swiper fix----*/
-
- .swiper.swiper-initialized {
-  min-width: 100% !important;
-  max-width: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-} 
-.qv_main_media.swiper.swiper-initialized, .qv_thumb_media.swiper {
-    max-width: 100%!important;
-}
 
 .skin-quiz__content-wrapper {
     display: flex;

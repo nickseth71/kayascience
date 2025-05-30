@@ -73,6 +73,15 @@
 
 
 <script>
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
 document.addEventListener("DOMContentLoaded", () => {
   window.collectionsProductsMetafields = {
   {% for collection in collections %}
@@ -180,6 +189,7 @@ dropdownHeadings.forEach(heading => {
   productTypeSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedProductType = e.target.getAttribute("value");
+      setCookie('product_type', selectedProductType, 7);
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
       const heading = this.previousElementSibling;
@@ -215,6 +225,7 @@ dropdownHeadings.forEach(heading => {
   concernSelect.addEventListener("click", function (e) {
     if (e.target.tagName === "LI" && !e.target.disabled) {
       selectedConcern = e.target.getAttribute("value");
+      setCookie('concern_type', selectedConcern, 7);
       this.querySelectorAll("li").forEach(li => li.classList.remove("active"));
       e.target.classList.add("active");
       const heading = this.previousElementSibling;

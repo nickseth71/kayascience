@@ -345,6 +345,37 @@
   {{ 'mask-arch.svg' | inline_asset_content }}
 {%- endif -%}
 
+<script>
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  } 
+
+  const savedSkinType = getCookie('skin_type');
+  const savedProductType = getCookie('product_type');
+  const savedConcernType = getCookie('concern_type');
+
+  const skinHeading = document.querySelector('.skin-type__content-wrapp .dropdown-heading');
+  if (skinHeading && savedSkinType) {
+    skinHeading.innerText = savedSkinType;
+  }
+
+  const productHeading = document.querySelector('.product-type__content-wrapp .dropdown-heading');
+  if (productHeading && savedProductType) {
+    productHeading.innerText = savedProductType;
+  }
+
+  const concernHeading = document.querySelector('.concern-type__content-wrapp .dropdown-heading');
+  if (concernHeading && savedConcernType) {
+    concernHeading.innerText = savedConcernType;
+  }
+
+  console.log('Skin Type:', savedSkinType); 
+  console.log('Product Type:', savedProductType);
+  console.log('Concern Type:', savedConcernType);
+</script>
 
 {% schema %}
 {

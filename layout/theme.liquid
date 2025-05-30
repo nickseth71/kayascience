@@ -651,6 +651,18 @@ countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count:
       pointer-events: none;
       opacity: 0.5;
       }
+      /*--------all swiper fix----*/
+
+      .swiper.swiper-initialized {
+        min-width: 100% !important;
+        max-width: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      } 
+      .qv_main_media.swiper.swiper-initialized, .qv_thumb_media.swiper {
+          max-width: 100%!important;
+      }
+
     </style>
     {% render 'quick-view-custom' %}
 
