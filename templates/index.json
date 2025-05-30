@@ -100,6 +100,46 @@
         "slide_height": "medium"
       }
     },
+    "skin_quiz_section_HBDtmR": {
+      "type": "skin-quiz-section",
+      "settings": {
+        "heading1": "My Hair",
+        "heading2": "Any Product",
+        "heading3": "Any Concern",
+        "col_trigger1": "skin",
+        "col_label1": "My Skin",
+        "col_list1": [
+          "face-toner",
+          "face-cream",
+          "cleanser",
+          "night-cream",
+          "moisturizer",
+          "face-serum",
+          "sunscreen"
+        ],
+        "col_trigger2": "body",
+        "col_label2": "For Body",
+        "col_list2": [
+          "shower-gel-1",
+          "body-lotion",
+          "foot-cream"
+        ],
+        "col_trigger3": "hair",
+        "col_label3": "For Hair",
+        "col_list3": [
+          "shampoo-1",
+          "lotion",
+          "hair-serum"
+        ],
+        "col_trigger4": "",
+        "col_label4": "",
+        "col_list4": [],
+        "col_trigger5": "",
+        "col_label5": "",
+        "col_list5": [],
+        "search_btn_label": "Discover your match"
+      }
+    },
     "image_text_block_rKfYjp": {
       "type": "image-text-block",
       "blocks": {
@@ -990,6 +1030,7 @@
   },
   "order": [
     "home_banner_mqrghP",
+    "skin_quiz_section_HBDtmR",
     "image_text_block_rKfYjp",
     "home_featured_collection_nP6Bmj",
     "moving_text_JRBXPE",
